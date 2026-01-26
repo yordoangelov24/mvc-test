@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Smart Fridge</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ui.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/auth.css">
+    
+    <link rel="stylesheet" href="css/admin.css"> 
+</head>
+<body>
+  
+    <div class="app-layout">
+    
+        <aside class="sidebar glass-dark">
+            <div class="logo">
+                <span>⚡ FRIDGE</span> <span style="background:var(--text-main); color:white; padding:2px 6px; border-radius:6px; font-size:12px;">OS</span>
+            </div>
+             <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+        </div>
+    </label>
+    <span class="mode-label">Mode</span>
+</div>
+<div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px;">
+    
+    <a href="index.html" class="menu-btn active" style="text-decoration:none; display:flex; align-items:center; gap:10px;">
+        🏠 Хладилник
+    </a>
+
+    <a href="recipes.html" class="menu-btn" style="text-decoration:none; display:flex; align-items:center; gap:10px;">
+        📖 Рецепти
+    </a>
+
+</div>
+            <div class="menu-label">Категории</div>
+            <nav class="category-menu">
+                <button class="menu-btn chip active" data-category="all">🌍 Всички</button>
+                <button class="menu-btn chip" data-category="Млечни">🥛 Млечни</button>
+                <button class="menu-btn chip" data-category="Месо">🥩 Месо</button>
+                <button class="menu-btn chip" data-category="Зеленчуци">🥦 Зеленчуци</button>
+                <button class="menu-btn chip" data-category="Плодове">🍎 Плодове</button>
+                <button class="menu-btn chip" data-category="Сладко">🍫 Сладко</button>
+                <button class="menu-btn chip" data-category="Зърнени">🍞 Зърнени</button>
+                <button class="menu-btn chip" data-category="Ядки">🥜 Ядки</button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="authBtn" class="auth-btn-side">🔑 Вход</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Наличности</h1>
+                <div class="search-box-neon">
+                    <input type="text" id="searchInput" placeholder="🔎 Търси продукт...">
+                </div>
+            </header>
+
+            <div class="product-grid" id="productList">
+                </div>
+        </main>
+
+        <aside class="right-panel glass-dark">
+            <div class="cart-header">
+                <h2>Кошница <span id="countTag" class="neon-badge">0</span></h2>
+                <button id="clearBtn" class="clear-link">Изчисти</button>
+            </div>
+
+            <div class="nutrition-bars">
+                <div class="bar-item">
+                    <div class="bar-label"><span>Протеин</span><span id="proteinVal">0g</span></div>
+                    <div class="bar-bg-dark"><div id="proteinBar" class="bar-fill-neon"></div></div>
+                </div>
+                <div class="bar-item">
+                    <div class="bar-label"><span>Мазнини</span><span id="fatVal">0g</span></div>
+                    <div class="bar-bg-dark"><div id="fatBar" class="bar-fill-neon"></div></div>
+                </div>
+            </div>
+
+            <div id="itemsContainer" class="items-dark">
+                </div>
+            
+            <div id="cartEmpty" class="empty-msg">
+                Хладилникът е празен...<br>Добави нещо! 🌑
+            </div>
+
+            <div class="cart-actions">
+                <button id="generateBtn" class="neon-btn-full">👨‍🍳 ГОТВИ</button>
+            </div>
+
+            <div class="recipe-box-dark" id="recipeBox" style="display: none;">
+                <h3>Резултат:</h3>
+                <div id="recipeText"></div>
+            </div>
+        </aside>
+
+    </div>
+
+   <div id="authModal" class="modal">
+    <div class="modal-content glass-dark">
+        <span class="close">&times;</span>
+        
+        <div class="auth-tabs">
+            <button id="tabLogin" class="auth-tab active">Вход</button>
+            <button id="tabRegister" class="auth-tab">Регистрация</button>
+        </div>
+        
+        <div id="loginForm" class="auth-form-container active">
+            <h2 style="text-align:center; color:white; margin-bottom:20px;">Добре дошъл! 👋</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="loginEmail" placeholder="Твоят Email" class="auth-input-modern">
+            </div>
+
+           <div class="input-group">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="loginPass" placeholder="Парола" class="auth-input-modern">
+              <i class="fas fa-eye show-pass-btn" id="toggleLoginPass"></i>
+            </div>
+
+               <div style="text-align: right; margin-bottom: 15px;">
+               <a href="#" id="forgotPassBtn" style="color: #bbb; font-size: 12px; text-decoration: none;">Забравена парола?</a>
+               </div>
+
+            <button id="loginSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">ВЛЕЗ</button>
+        </div>
+
+        <div id="registerForm" class="auth-form-container" style="display:none;">
+            <h2 style="text-align:center; color:white; margin-bottom:20px;">Нов профил 🚀</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="regEmail" placeholder="Нов Email" class="auth-input-modern">
+            </div>
+
+           <div class="input-group">
+    <i class="fas fa-lock input-icon"></i>
+    <input type="password" id="regPass" placeholder="Измисли парола" class="auth-input-modern">
+    <i class="fas fa-eye show-pass-btn" id="toggleRegPass"></i>
+</div>
+
+<div class="strength-container" style="margin-top: -10px; margin-bottom: 15px;">
+    <div class="strength-bar">
+        <div id="strengthFill" style="width: 0%;"></div>
+    </div>
+    <div id="strengthText" style="font-size: 11px; color: #888; text-align: right; margin-top: 3px;">
+        Парола...
+    </div>
+</div>
+            <button id="regSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">РЕГИСТРАЦИЯ</button>
+        </div>
+    </div>
+</div>
+
+   <button id="adminFab" class="admin-fab">⚙️</button>
+
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-content">
+            <span class="close-admin">&times;</span>
+            <h2>Добави Продукт</h2>
+            <input type="text" id="prodName" placeholder="Име на продукта">
+            <input type="number" id="prodCal" placeholder="Калории">
+            <input type="number" id="prodProt" placeholder="Протеин (g)">
+            <input type="number" id="prodFat" placeholder="Мазнини (g)">
+            <select id="prodCat">
+                <option value="Млечни">Млечни</option>
+                <option value="Месо">Месо</option>
+                <option value="Зеленчуци">Зеленчуци</option>
+                <option value="Плодове">Плодове</option>
+                <option value="Сладко">Сладко</option>
+                <option value="Зърнени">Зърнени</option>
+                <option value="Ядки">Ядки</option>
+            </select>
+            <button id="addProductBtn" class="neon-btn-full">Запиши в базата</button>
+        </div>
+    </div>
+
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>

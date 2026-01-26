@@ -1,0 +1,74 @@
+/* PRIMARY NEON BUTTON */
+.neon-btn-full {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 16px;
+    border-radius: 18px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+    transition: 0.3s;
+}
+.neon-btn-full:hover {
+    background: #0062cc;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 122, 255, 0.4);
+}
+
+/* ANIMATIONS */
+@keyframes popIn {
+    0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes slideInToast {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOutToast {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateY(20px); opacity: 0; }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+
+.shake-animation {
+  animation: shake 0.4s ease-in-out;
+  border: 1px solid #ff4757 !important;
+}
+
+/* TOAST NOTIFICATIONS */
+.toast-container {
+    position: fixed; bottom: 30px; right: 30px;
+    display: flex; flex-direction: column; gap: 15px; z-index: 9999;
+}
+
+.toast {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-left: 5px solid var(--primary);
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex; align-items: center; gap: 12px; min-width: 250px;
+    animation: slideInToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0; transform: translateX(100%);
+}
+.toast.hide { animation: fadeOutToast 0.4s forwards; }
+
+.toast-content { font-size: 14px; font-weight: 600; color: #2d3436; }
+.toast-icon { font-size: 20px; }
+
+.toast.success { border-color: #00b894; }
+.toast.error { border-color: #ff7675; }
+.toast.info { border-color: #0984e3; }

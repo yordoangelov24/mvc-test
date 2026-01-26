@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Готварска Книга | Smart Fridge</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ui.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+            <div class="logo">
+                <span>⚡ FRIDGE</span> <span style="background:var(--text-main); color:white; padding:2px 6px; border-radius:6px; font-size:12px;">OS</span>
+            </div>
+
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider round">
+                        <span>☀️</span><span>🌙</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="menu-label">НАВИГАЦИЯ</div>
+            <div class="category-menu">
+                <a href="index.html" class="menu-btn" style="text-decoration:none; display:block;">🏠 Към Хладилника</a>
+                <button class="menu-btn active">📖 Рецепти</button>
+            </div>
+
+            <div class="sidebar-footer">
+                <button id="authBtn" class="auth-btn-side">🔑 Вход</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-bar">
+                <h1>Готварска Книга 🍳</h1>
+                <button id="btnFavFilter" class="clear-link" style="background:#ff6b6b; border:none; color:white;">
+                    ❤️ Само любими
+                </button>
+            </div>
+
+            <div id="recipeGrid" class="product-grid">
+                Loading...
+            </div>
+        </main>
+
+        <aside class="right-panel" style="justify-content:center; align-items:center; text-align:center; color:var(--text-muted);">
+            <h2>👨‍🍳 Съвет</h2>
+            <p>Кликни на сърцето, за да запазиш любимите си рецепти.</p>
+            <div style="font-size:50px; margin-top:20px;">🥗</div>
+        </aside>
+
+    </div>
+
+   <div id="authModal" class="modal">
+    <div class="modal-content glass-dark">
+        <span class="close">&times;</span>
+        
+        <div class="auth-tabs">
+            <button id="tabLogin" class="auth-tab active">Вход</button>
+            <button id="tabRegister" class="auth-tab">Регистрация</button>
+        </div>
+        
+        <div id="loginForm" class="auth-form-container active">
+            <h2 style="text-align:center; color:white; margin-bottom:20px;">Добре дошъл! 👋</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="loginEmail" placeholder="Твоят Email" class="auth-input-modern">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="loginPass" placeholder="Парола" class="auth-input-modern">
+                <i class="fas fa-eye show-pass-btn" id="toggleLoginPass"></i>
+            </div>
+
+            <button id="loginSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">ВЛЕЗ</button>
+        </div>
+
+        <div id="registerForm" class="auth-form-container" style="display:none;">
+            <h2 style="text-align:center; color:white; margin-bottom:20px;">Нов профил 🚀</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="regEmail" placeholder="Нов Email" class="auth-input-modern">
+            </div>
+
+            <div class="input-group">
+    <i class="fas fa-lock input-icon"></i>
+    <input type="password" id="regPass" placeholder="Измисли парола" class="auth-input-modern">
+    <i class="fas fa-eye show-pass-btn" id="toggleRegPass"></i>
+</div>
+
+<div class="strength-container" style="margin-top: -10px; margin-bottom: 15px;">
+    <div class="strength-bar">
+        <div id="strengthFill" style="width: 0%;"></div>
+    </div>
+    <div id="strengthText" style="font-size: 11px; color: #888; text-align: right; margin-top: 3px;">
+        Парола...
+    </div>
+</div>
+
+            <button id="regSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">РЕГИСТРАЦИЯ</button>
+        </div>
+    </div>
+</div>
+
+   <script type="module" src="./js/main.js"></script>
+</body>
+</html>
