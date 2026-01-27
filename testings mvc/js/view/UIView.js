@@ -14,6 +14,10 @@ export class UIView {
             countTag: document.getElementById("countTag"),
             recipeBox: document.getElementById("recipeBox"),
             recipeText: document.getElementById("recipeText"),
+            cookingModal: document.getElementById("cookingModal"), 
+            cookingResultsList: document.getElementById("cookingResultsList"), 
+            closeCookingBtn: document.querySelector(".close-cooking"),
+            cookingModal : document.getElementById("cookingModal"),
             bars: {
                 prot: { bar: document.getElementById("proteinBar"), val: document.getElementById("proteinVal") },
                 fat: { bar: document.getElementById("fatBar"), val: document.getElementById("fatVal") }
@@ -209,6 +213,76 @@ export class UIView {
                 <hr>
                  <p>📊 <strong>Кал:</strong> ${total.cal.toFixed(0)} | <strong>Прот:</strong> ${total.prot.toFixed(1)}g</p>
             `;
+        }
+    }
+    toggleCookingModal(show) {
+    if (this.elements.cookingModal) {
+        this.elements.cookingModal.style.display = show ? "flex" : "none";
+    }
+}
+
+renderCookingResults(data) {
+        const list = this.elements.cookingResultsList;
+        const modalContent = document.querySelector("#cookingModal .modal-content");
+        
+        // Добавяме класа за стъклен ефект
+        if (modalContent) {
+            modalContent.classList.add("glass-modal");
+        }
+
+        if (!list) return;
+        list.innerHTML = ""; 
+
+        // Помощна функция за създаване на HTML с класове
+        const createRecipeCard = (item, type) => {
+            const r = item.recipe;
+            const usedNames = item.used.map(p => p.name).join(", ");
+            
+            let missingHtml = "";
+            let borderColor = "#2ed573"; // Зелено по подразбиране
+
+            if (type === "partial") {
+                borderColor = "#ffa502"; // Оранжево
+                const missingNames = item.missing.map(p => p.name).join(", ");
+                missingHtml = `<div class="recipe-missing">🛑 Липсва: <strong>${missingNames}</strong></div>`;
+            }
+
+            const div = document.createElement("div");
+            div.className = "recipe-result-card";
+            div.style.borderLeftColor = borderColor; // Само цветът на бордера остава тук
+
+            div.innerHTML = `
+                <h3 class="recipe-title">${r.title}</h3>
+                ${missingHtml}
+                <div class="recipe-used">✅ Ползваш: <strong>${usedNames}</strong></div>
+                <p class="recipe-desc">${r.description}</p>
+                <hr style="border-color:rgba(255,255,255,0.1); margin:15px 0;">
+                <p class="recipe-steps-title">🔪 Начин на приготвяне:</p>
+                <p class="recipe-steps-text">${r.steps || "Няма въведени стъпки."}</p>
+            `;
+            return div;
+        };
+
+        // Рендиране на ТОЧНИТЕ
+        if (data.exact.length > 0) {
+            const h3 = document.createElement("h3");
+            h3.className = "section-exact";
+            h3.textContent = `✨ Можеш да сготвиш веднага (${data.exact.length})`;
+            list.appendChild(h3);
+            data.exact.forEach(item => list.appendChild(createRecipeCard(item, "exact")));
+        }
+
+        // Рендиране на ЧАСТИЧНИТЕ
+        if (data.partial.length > 0) {
+            const h3 = document.createElement("h3");
+            h3.className = "section-partial";
+            h3.textContent = `🛒 Трябва да купиш малко (${data.partial.length})`;
+            list.appendChild(h3);
+            data.partial.forEach(item => list.appendChild(createRecipeCard(item, "partial")));
+        }
+
+        if (data.exact.length === 0 && data.partial.length === 0) {
+            list.innerHTML = "<div style='text-align:center; padding:40px; color:#888;'>Не намерихме рецепти с тези продукти... 🤷‍♂️<br>Опитай да добавиш основни неща като яйца, мляко или брашно.</div>";
         }
     }
 }

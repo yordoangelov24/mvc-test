@@ -1,6 +1,6 @@
-import { AuthModel } from "./models/AuthModel.js";
-import { DataModel } from "./models/DataModel.js";
-import { UIView } from "./view/UIView.js";
+import { AuthModel } from "../models/AuthModel.js";
+import { DataModel } from "../models/DataModel.js";
+import { UIView } from "../view/UIView.js";
 
 export class AppController {
     constructor() {
@@ -18,15 +18,19 @@ export class AppController {
         this.setupAuthListeners();
         this.authModel.monitorAuthState((user, isAdmin) => {
             this.view.updateAuthUI(user, isAdmin);
-            this.refreshPageData(user); // Презарежда данните според страницата
+            // Това тук сработва, но понякога ПРЕДИ данните да са дошли, затова е празно
+            this.refreshPageData(user); 
         });
 
         // 2. Setup Data
         await this.dataModel.fetchAllData();
         
+        // 🔥 НОВО: Веднага покажи данните, след като са заредени!
+        this.refreshPageData(this.authModel.currentUser);
+
         // 3. Setup UI (Dark mode, Tabs, etc)
         this.setupUIListeners();
-        this.setupRoutingLogic(); // Проверява на коя страница сме
+        this.setupRoutingLogic(); 
     }
 
     // --- LOGIC: Routing (Какво да заредим?) ---
@@ -46,13 +50,15 @@ export class AppController {
     }
 
     // --- LOGIC: Products & Cart (Index) ---
-    setupRoutingLogic() {
-        // Search & Filter
+    setupRoutingLogic() 
+    {
+        // 1. Търсачка
         const searchInput = document.getElementById("searchInput");
         if (searchInput) {
             searchInput.addEventListener("input", () => this.filterProducts());
         }
 
+        // 2. Филтри (Чипове)
         const chips = document.querySelectorAll(".chip");
         chips.forEach(chip => {
             chip.addEventListener("click", (e) => {
@@ -63,7 +69,7 @@ export class AppController {
             });
         });
 
-        // Cart Buttons
+        // 3. Бутон "Изчисти количката"
         const clearBtn = document.getElementById("clearBtn");
         if (clearBtn) clearBtn.onclick = () => {
             this.dataModel.clearCart();
@@ -71,10 +77,30 @@ export class AppController {
             this.view.showToast("Кошницата е изчистена", "info");
         };
 
+        // 4. Бутон "ГОТВИ"
         const genBtn = document.getElementById("generateBtn");
         if (genBtn) genBtn.onclick = () => this.handleGenerateRecipe();
-    }
 
+        // 5. 🔥 НОВО: Логика за Модала за Готвене
+        // Затваряне от Х-чето
+        if (this.view.elements.closeCookingBtn) {
+            this.view.elements.closeCookingBtn.onclick = () => this.view.toggleCookingModal(false);
+        }
+
+        // Затваряне при клик извън прозореца (на тъмното)
+        window.addEventListener("click", (e) => {
+            if (this.view.elements.cookingModal && e.target === this.view.elements.cookingModal) {
+                this.view.toggleCookingModal(false);
+            }
+        });
+        const closeCook = document.querySelector(".close-cooking");
+        const cookModal = document.getElementById("cookingModal");
+        
+        if (closeCook) closeCook.onclick = () => this.view.toggleCookingModal(false);
+        window.onclick = (e) => {
+            if (e.target === cookModal) this.view.toggleCookingModal(false);
+        };
+    }
     filterProducts() {
         const term = document.getElementById("searchInput")?.value.toLowerCase() || "";
         const filtered = this.dataModel.products.filter(p => {
@@ -92,71 +118,25 @@ export class AppController {
             this.view.showToast(`${res.product.name} добавен!`, "success");
         });
     }
-
-    handleGenerateRecipe() {
-        const result = this.dataModel.findBestRecipe();
+    // --- LOGIC: Recipes Page ---
+     handleGenerateRecipe() {
+        // 1. Използваме новия метод за търсене (ще го добавим в DataModel след малко)
+        const result = this.dataModel.findAllMatchingRecipes();
 
         if (result.status === "empty") {
             this.view.showToast("Кошницата е празна!", "error");
             return;
         }
 
-        if (result.status === "found") {
-            this.view.showToast("Намерена рецепта!", "success");
-            this.view.showRecipeResult(result.recipe, this.dataModel.cart, true);
-        } 
-        else if (result.status === "partial") {
-            const names = result.missing.map(p => p.name).join(", ");
-            if (confirm(`За "${result.recipe.title}" липсват: ${names}. Да ги добавя ли?`)) {
-                result.missing.forEach(p => this.dataModel.addToCart(p));
-                this.view.updateCartUI(this.dataModel.cart, (id) => this.dataModel.removeFromCart(id));
-                this.view.showRecipeResult(result.recipe, this.dataModel.cart, true);
-                this.view.showToast("Продуктите са добавени!", "success");
-            }
-        } 
-        else {
-            this.view.showToast("Няма точна рецепта.", "info");
-            this.view.showRecipeResult(null, this.dataModel.cart, false);
-        }
-    }
-
-    // --- LOGIC: Recipes Page ---
-    async loadRecipesPage(user, onlyFavs) {
-        let userFavs = [];
-        if (user) {
-            userFavs = await this.dataModel.getUserFavorites(user.uid);
-        }
-        
-        let recipesToShow = this.dataModel.recipes;
-        
-        // Филтър за любими
-        if (onlyFavs) {
-            if (!user) {
-                recipesToShow = []; // Не си логнат -> няма любими
-            } else {
-                recipesToShow = recipesToShow.filter(r => userFavs.includes(r.title));
-            }
-        }
-        
-        // Филтър бутон (само за recipes.html)
-        const btnFavFilter = document.getElementById("btnFavFilter");
-        if(btnFavFilter && !onlyFavs) {
-            // Малка хакерска логика за тогъла
-            btnFavFilter.onclick = () => {
-                const isActive = btnFavFilter.classList.toggle("active");
-                if(isActive) {
-                    btnFavFilter.innerHTML = "📃 Покажи всички";
-                    const favsOnly = this.dataModel.recipes.filter(r => userFavs.includes(r.title));
-                    this.view.renderRecipesGrid(favsOnly, userFavs, this.handleFavToggle.bind(this));
-                } else {
-                    btnFavFilter.innerHTML = "❤️ Само любими";
-                    this.view.renderRecipesGrid(this.dataModel.recipes, userFavs, this.handleFavToggle.bind(this));
-                }
-            };
+        if (result.status === "none") {
+            this.view.showToast("Няма подходящи рецепти.", "info");
         }
 
-        this.view.renderRecipesGrid(recipesToShow, userFavs, this.handleFavToggle.bind(this));
+        // 2. Отваряме модала и показваме резултатите
+        this.view.renderCookingResults(result);
+        this.view.toggleCookingModal(true);
     }
+    
 
     async handleFavToggle(title, btnElement) {
         if (!this.authModel.currentUser) {

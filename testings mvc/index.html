@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/auth.css">
     
-    <link rel="stylesheet" href="css/admin.css"> 
+    
 </head>
 <body>
   
@@ -188,7 +188,16 @@
             <button id="addProductBtn" class="neon-btn-full">Запиши в базата</button>
         </div>
     </div>
-
+<div id="cookingModal" class="modal">
+    <div class="modal-content glass-dark" style="max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto;">
+        <span class="close-cooking" style="position:absolute; right:20px; top:15px; cursor:pointer; font-size:24px;">&times;</span>
+        
+        <h2 style="text-align:center; margin-bottom:20px;">👨‍🍳 Какво можеш да сготвиш?</h2>
+        
+        <div id="cookingResultsList" style="display:flex; flex-direction:column; gap:20px;">
+            </div>
+    </div>
+</div>
 
 <script type="module" src="./js/main.js"></script>
 </body>

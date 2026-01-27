@@ -44,35 +44,54 @@ export class DataModel {
         this.cart = [];
     }
 
-    // Алгоритъм за намиране на рецепта
-    findBestRecipe() {
+   // Търси ВСИЧКИ подходящи рецепти (с подобрена логика)
+    findAllMatchingRecipes() {
         if (this.cart.length === 0) return { status: "empty" };
 
         const cartIds = this.cart.map(i => i.id);
+        const exactMatches = [];
+        const partialMatches = [];
 
-        // 1. Пълно съвпадение
-        const exactMatches = this.recipes.filter(r => r.ingredients.every(id => cartIds.includes(id)));
-        exactMatches.sort((a, b) => b.ingredients.length - a.ingredients.length);
+        this.recipes.forEach(recipe => {
+            // 1. Какво липсва?
+            const missingIds = recipe.ingredients.filter(id => !cartIds.includes(id));
+            
+            // 2. Какво ИМАМЕ?
+            const usedIds = recipe.ingredients.filter(id => cartIds.includes(id));
 
-        if (exactMatches.length > 0) {
-            return { status: "found", recipe: exactMatches[0] };
-        }
+            // АКО рецептата не ползва нито един продукт от количката -> ПРОПУСКАМЕ Я
+            if (usedIds.length === 0) return;
 
-        // 2. Частично съвпадение (Almost Match)
-        let almostMatch = this.recipes.find(r => {
-            const missing = r.ingredients.filter(id => !cartIds.includes(id));
-            return missing.length > 0 && missing.length <= 2;
+            // 🔥 ВАЖНО: Намираме целите обекти на продуктите, за да им вземем имената
+            const usedProducts = this.products.filter(p => usedIds.includes(p.id));
+
+            if (missingIds.length === 0) {
+                // Точно попадение (Добавяме и usedProducts!)
+                exactMatches.push({ 
+                    recipe: recipe, 
+                    used: usedProducts  // <--- ТОВА ЛИПСВАШЕ
+                });
+            } else if (missingIds.length <= 2) {
+                // Частично попадение
+                const missingProducts = this.products.filter(p => missingIds.includes(p.id));
+                partialMatches.push({ 
+                    recipe: recipe, 
+                    missing: missingProducts, 
+                    used: usedProducts // <--- ТОВА ЛИПСВАШЕ
+                });
+            }
         });
 
-        if (almostMatch) {
-            const missingIds = almostMatch.ingredients.filter(id => !cartIds.includes(id));
-            const missingProducts = this.products.filter(p => missingIds.includes(p.id));
-            return { status: "partial", recipe: almostMatch, missing: missingProducts };
-        }
+        // Сортиране
+        exactMatches.sort((a, b) => b.used.length - a.used.length);
+        partialMatches.sort((a, b) => a.used.length - b.used.length);
 
-        return { status: "none" };
+        return { 
+            status: (exactMatches.length > 0 || partialMatches.length > 0) ? "found" : "none",
+            exact: exactMatches,
+            partial: partialMatches
+        };
     }
-
     // Админ: Добавяне на продукт
     async addProductToDb(productData) {
         await addDoc(collection(db, "products"), productData);

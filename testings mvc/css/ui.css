@@ -72,3 +72,77 @@
 .toast.success { border-color: #00b894; }
 .toast.error { border-color: #ff7675; }
 .toast.info { border-color: #0984e3; }
+
+/* --- 💣 BOMB EFFECT (FIXED) --- */
+
+/* 1. АНИМАЦИЯТА */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 2. НАСИЛСТВЕНО СТИЛИЗИРАНЕ НА ПРОЗОРЕЦА */
+/* Използваме ID-то #cookingModal, за да сме сигурни, че хващаме правилния елемент */
+#cookingModal .modal-content {
+    /* Трите цвята за преливане */
+    background: linear-gradient(-45deg, #0f172a, #1d4ed8, #7c3aed, #db2777) !important;
+    background-size: 400% 400% !important;
+    animation: gradientMove 6s ease infinite !important; /* По-бърза и плавна анимация */
+    
+    /* Форма и сянка */
+    border-radius: 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 0 50px rgba(37, 99, 235, 0.6) !important; /* Силно светене */
+    
+    /* Текст */
+    color: white !important;
+    padding: 30px !important;
+    max-width: 800px !important;
+    width: 95% !important;
+}
+
+/* 3. КАРТИТЕ ВЪТРЕ (Полупрозрачни) */
+#cookingModal .recipe-result-card {
+    background: rgba(0, 0, 0, 0.4) !important; /* Тъмен фон */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(5px) !important;
+    color: white !important;
+    margin-bottom: 15px !important;
+    border-radius: 16px !important;
+    transition: transform 0.2s !important;
+}
+
+#cookingModal .recipe-result-card:hover {
+    transform: scale(1.02) !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* 4. ТЕКСТОВЕТЕ ДА СВЕТЯТ */
+#cookingModal h2, 
+#cookingModal h3, 
+#cookingModal p, 
+#cookingModal div {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8) !important; /* Сянка на текста за четливост */
+}
+
+/* Хапчетата за продуктите */
+#cookingModal .recipe-used {
+    background: rgba(46, 213, 115, 0.3) !important;
+    color: #4fffa0 !important;
+    border: 1px solid #4fffa0 !important;
+    box-shadow: 0 0 10px rgba(46, 213, 115, 0.2) !important;
+}
+
+#cookingModal .recipe-missing {
+    background: rgba(255, 71, 87, 0.3) !important;
+    color: #ff6b81 !important;
+    border: 1px solid #ff6b81 !important;
+}
+
+/* Скриване на оригиналния фон ако има */
+#cookingModal.glass-modal {
+    background: none !important;
+}
