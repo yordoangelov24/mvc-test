@@ -17,5 +17,5 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Експортваме ги, за да могат app.js и admin.js да ги ползват
+// Експортваме ги, за да може app.js да го ползва
 export { app, db, auth };

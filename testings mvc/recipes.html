@@ -19,7 +19,7 @@
 
     <div class="app-layout">
         
-        <aside class="sidebar">
+        <aside class="sidebar glass-dark">
             <div class="logo">
                 <span>⚡ FRIDGE</span> <span style="background:var(--text-main); color:white; padding:2px 6px; border-radius:6px; font-size:12px;">OS</span>
             </div>
@@ -28,15 +28,20 @@
                 <label class="theme-switch" for="checkbox">
                     <input type="checkbox" id="checkbox" />
                     <div class="slider round">
-                        <span>☀️</span><span>🌙</span>
+                        <span class="icon-sun">☀️</span>
+                        <span class="icon-moon">🌙</span>
                     </div>
                 </label>
             </div>
 
             <div class="menu-label">НАВИГАЦИЯ</div>
             <div class="category-menu">
-                <a href="index.html" class="menu-btn" style="text-decoration:none; display:block;">🏠 Към Хладилника</a>
-                <button class="menu-btn active">📖 Рецепти</button>
+                <a href="index.html" class="menu-btn" style="text-decoration:none;">
+                    🏠 <span class="menu-text">Към Хладилника</span>
+                </a>
+                <button class="menu-btn active">
+                    📖 <span class="menu-text">Рецепти</span>
+                </button>
             </div>
 
             <div class="sidebar-footer">
@@ -47,78 +52,79 @@
         <main class="main-content">
             <div class="top-bar">
                 <h1>Готварска Книга 🍳</h1>
-                <button id="btnFavFilter" class="clear-link" style="background:#ff6b6b; border:none; color:white;">
+                <button id="btnFavFilter" class="clear-link" style="background:#ff6b6b; border:none; color:white; padding: 8px 15px; border-radius: 20px; cursor: pointer;">
                     ❤️ Само любими
                 </button>
             </div>
 
             <div id="recipeGrid" class="product-grid">
-                Loading...
+                <div style="grid-column: 1/-1; text-align:center; padding:20px; color:#888;">
+                    Loading recipes... ⏳
+                </div>
             </div>
         </main>
 
-        <aside class="right-panel" style="justify-content:center; align-items:center; text-align:center; color:var(--text-muted);">
+        <aside class="right-panel glass-dark" style="justify-content:center; align-items:center; text-align:center; color:var(--text-muted);">
             <h2>👨‍🍳 Съвет</h2>
-            <p>Кликни на сърцето, за да запазиш любимите си рецепти.</p>
+            <p style="margin-top: 15px; padding: 0 10px;">Кликни на сърцето, за да запазиш любимите си рецепти.</p>
             <div style="font-size:50px; margin-top:20px;">🥗</div>
         </aside>
 
     </div>
 
-   <div id="authModal" class="modal">
-    <div class="modal-content glass-dark">
-        <span class="close">&times;</span>
-        
-        <div class="auth-tabs">
-            <button id="tabLogin" class="auth-tab active">Вход</button>
-            <button id="tabRegister" class="auth-tab">Регистрация</button>
-        </div>
-        
-        <div id="loginForm" class="auth-form-container active">
-            <h2 style="text-align:center; color:white; margin-bottom:20px;">Добре дошъл! 👋</h2>
-            
-            <div class="input-group">
-                <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="loginEmail" placeholder="Твоят Email" class="auth-input-modern">
+    <div id="authModal" class="modal">
+        <div class="modal-content glass-dark">
+            <span class="close">&times;</span>
+            <div class="auth-tabs">
+                <button id="tabLogin" class="auth-tab active">Вход</button>
+                <button id="tabRegister" class="auth-tab">Регистрация</button>
             </div>
-
-            <div class="input-group">
-                <i class="fas fa-lock input-icon"></i>
-                <input type="password" id="loginPass" placeholder="Парола" class="auth-input-modern">
-                <i class="fas fa-eye show-pass-btn" id="toggleLoginPass"></i>
+            <div id="loginForm" class="auth-form-container active">
+                <h2 style="text-align:center; color:white; margin-bottom:20px;">Добре дошъл! 👋</h2>
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="loginEmail" placeholder="Твоят Email" class="auth-input-modern">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="loginPass" placeholder="Парола" class="auth-input-modern">
+                    <i class="fas fa-eye show-pass-btn" id="toggleLoginPass"></i>
+                </div>
+                <button id="loginSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">ВЛЕЗ</button>
             </div>
-
-            <button id="loginSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">ВЛЕЗ</button>
-        </div>
-
-        <div id="registerForm" class="auth-form-container" style="display:none;">
-            <h2 style="text-align:center; color:white; margin-bottom:20px;">Нов профил 🚀</h2>
-            
-            <div class="input-group">
-                <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="regEmail" placeholder="Нов Email" class="auth-input-modern">
+            <div id="registerForm" class="auth-form-container" style="display:none;">
+                <h2 style="text-align:center; color:white; margin-bottom:20px;">Нов профил 🚀</h2>
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="regEmail" placeholder="Нов Email" class="auth-input-modern">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="regPass" placeholder="Измисли парола" class="auth-input-modern">
+                    <i class="fas fa-eye show-pass-btn" id="toggleRegPass"></i>
+                </div>
+                <button id="regSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">РЕГИСТРАЦИЯ</button>
             </div>
-
-            <div class="input-group">
-    <i class="fas fa-lock input-icon"></i>
-    <input type="password" id="regPass" placeholder="Измисли парола" class="auth-input-modern">
-    <i class="fas fa-eye show-pass-btn" id="toggleRegPass"></i>
-</div>
-
-<div class="strength-container" style="margin-top: -10px; margin-bottom: 15px;">
-    <div class="strength-bar">
-        <div id="strengthFill" style="width: 0%;"></div>
-    </div>
-    <div id="strengthText" style="font-size: 11px; color: #888; text-align: right; margin-top: 3px;">
-        Парола...
-    </div>
-</div>
-
-            <button id="regSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">РЕГИСТРАЦИЯ</button>
         </div>
     </div>
-</div>
 
-   <script type="module" src="./js/main.js"></script>
+    <button id="mobileCartToggle" style="
+        display: none; /* Скрит на десктоп */
+        position: fixed;
+        bottom: 90px; right: 20px;
+        width: 60px; height: 60px;
+        background: var(--primary, #FF6B6B);
+        color: white;
+        border: none; border-radius: 50%;
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        z-index: 1500;
+        font-size: 24px;
+        cursor: pointer;
+        align-items: center; justify-content: center;
+    ">
+        💡
+    </button>
+
+    <script type="module" src="./js/main.js"></script>
 </body>
 </html>

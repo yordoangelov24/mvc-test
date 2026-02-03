@@ -1,3 +1,8 @@
+/* --- UI COMPONENTS & ANIMATIONS --- */
+
+/* 🔥 НОВО: Импорт на ГЪЗАРСКИ шрифтове (Montserrat & Nunito) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Nunito:wght@400;600;700&display=swap');
+
 /* PRIMARY NEON BUTTON */
 .neon-btn-full {
     background: var(--primary);
@@ -6,16 +11,19 @@
     width: 100%;
     padding: 16px;
     border-radius: 18px;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif; /* Нов шрифт */
     font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
     transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 .neon-btn-full:hover {
-    background: #0062cc;
+    filter: brightness(1.1);
     transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 12px 25px rgba(255, 107, 107, 0.4);
 }
 
 /* ANIMATIONS */
@@ -63,86 +71,259 @@
     display: flex; align-items: center; gap: 12px; min-width: 250px;
     animation: slideInToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     opacity: 0; transform: translateX(100%);
+    font-family: 'Nunito', sans-serif;
 }
 .toast.hide { animation: fadeOutToast 0.4s forwards; }
 
-.toast-content { font-size: 14px; font-weight: 600; color: #2d3436; }
+.toast-content { font-size: 14px; font-weight: 700; color: #2d3436; }
 .toast-icon { font-size: 20px; }
 
 .toast.success { border-color: #00b894; }
 .toast.error { border-color: #ff7675; }
 .toast.info { border-color: #0984e3; }
 
-/* --- 💣 BOMB EFFECT (FIXED) --- */
+
+/* --- ☕ CAPPUCCINO / LIGHT BROWN MODAL --- */
 
 /* 1. АНИМАЦИЯТА */
-@keyframes gradientMove {
+@keyframes peachFlow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* 2. НАСИЛСТВЕНО СТИЛИЗИРАНЕ НА ПРОЗОРЕЦА */
-/* Използваме ID-то #cookingModal, за да сме сигурни, че хващаме правилния елемент */
+/* 2. ПРОЗОРЕЦЪТ (Светло кафяв / Карамел) */
 #cookingModal .modal-content {
-    /* Трите цвята за преливане */
-    background: linear-gradient(-45deg, #0f172a, #1d4ed8, #7c3aed, #db2777) !important;
-    background-size: 400% 400% !important;
-    animation: gradientMove 6s ease infinite !important; /* По-бърза и плавна анимация */
+    background: linear-gradient(-45deg, #E6CCB2, #DDB892, #D4A373, #E6CCB2) !important;
+    background-size: 300% 300% !important;
+    animation: peachFlow 10s ease infinite !important;
     
-    /* Форма и сянка */
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important; 
     border-radius: 24px !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 0 50px rgba(37, 99, 235, 0.6) !important; /* Силно светене */
+    box-shadow: 0 25px 50px rgba(120, 80, 60, 0.3) !important;
     
-    /* Текст */
-    color: white !important;
+    color: #3e2723 !important; 
     padding: 30px !important;
     max-width: 800px !important;
     width: 95% !important;
+    
+    /* 🔥 Основен шрифт за всичко в модала */
+    font-family: 'Nunito', sans-serif !important; 
 }
 
-/* 3. КАРТИТЕ ВЪТРЕ (Полупрозрачни) */
-#cookingModal .recipe-result-card {
-    background: rgba(0, 0, 0, 0.4) !important; /* Тъмен фон */
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(5px) !important;
-    color: white !important;
-    margin-bottom: 15px !important;
-    border-radius: 16px !important;
-    transition: transform 0.2s !important;
-}
-
-#cookingModal .recipe-result-card:hover {
-    transform: scale(1.02) !important;
-    background: rgba(0, 0, 0, 0.6) !important;
-    border-color: rgba(255, 255, 255, 0.4) !important;
-}
-
-/* 4. ТЕКСТОВЕТЕ ДА СВЕТЯТ */
-#cookingModal h2, 
-#cookingModal h3, 
-#cookingModal p, 
-#cookingModal div {
-    color: white !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8) !important; /* Сянка на текста за четливост */
-}
-
-/* Хапчетата за продуктите */
-#cookingModal .recipe-used {
-    background: rgba(46, 213, 115, 0.3) !important;
-    color: #4fffa0 !important;
-    border: 1px solid #4fffa0 !important;
-    box-shadow: 0 0 10px rgba(46, 213, 115, 0.2) !important;
-}
-
-#cookingModal .recipe-missing {
-    background: rgba(255, 71, 87, 0.3) !important;
-    color: #ff6b81 !important;
-    border: 1px solid #ff6b81 !important;
-}
-
-/* Скриване на оригиналния фон ако има */
+/* Скриване на оригиналния фон */
 #cookingModal.glass-modal {
     background: none !important;
+}
+
+/* 3. ЗАГЛАВИЯ (ГЪЗАРСКИ ШРИФТ) */
+#cookingModal h2 {
+    color: #4E342E !important; 
+    font-family: 'Montserrat', sans-serif !important; /* Тежък, модерен шрифт */
+    font-weight: 900 !important; /* Ултра дебел */
+    text-transform: uppercase;
+    letter-spacing: -0.5px; /* Сбиваме буквите леко за стил */
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* 4. КАРТИТЕ ВЪТРЕ (Млечен шоколад) */
+.recipe-preview-card, 
+.recipe-result-card {
+    background: rgba(141, 110, 99, 0.5) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(8px);
+    border-radius: 16px !important;
+    color: white !important; 
+    transition: all 0.2s ease-in-out !important;
+}
+
+.recipe-preview-card {
+    display: flex !important;              
+    justify-content: space-between !important; 
+    align-items: center !important;       
+    padding: 15px 20px !important;
+}
+
+.recipe-preview-card:hover,
+.recipe-result-card:hover {
+    background: rgba(141, 110, 99, 0.7) !important; 
+    transform: scale(1.02) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 10px 20px rgba(93, 64, 55, 0.2) !important;
+}
+
+/* --- ТИПОГРАФИЯ В КАРТИТЕ --- */
+
+/* Заглавие на рецепта */
+.preview-info h3, 
+.recipe-title {
+    color: #fff !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 800 !important; /* Bold */
+    font-size: 18px;
+    text-shadow: 0 2px 4px rgba(93, 64, 55, 0.4);
+    margin: 0 !important;
+    letter-spacing: 0.5px;
+}
+
+.preview-status {
+    display: inline-block;
+    margin-top: 6px;
+    font-family: 'Montserrat', sans-serif !important; /* Статусите също с готиния шрифт */
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+
+/* Описание и текст */
+.recipe-desc, 
+.recipe-steps-text {
+    color: #f5f5f5 !important;
+    font-family: 'Nunito', sans-serif !important; /* За дълъг текст ползваме Nunito - чете се супер */
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.7; /* Повече въздух между редовете */
+}
+
+/* Заглавия "Начин на приготвяне" */
+.recipe-steps-title {
+    color: #efebe9 !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1.5px; /* Разпъваме го малко */
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+/* 5. СТАТУСИ И БАДЖОВЕ */
+.status-exact, 
+.recipe-used { 
+    background: rgba(20, 60, 30, 0.6) !important; 
+    color: #b9f6ca !important; 
+    border: 1px solid rgba(76, 175, 80, 0.4) !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.status-partial,
+.recipe-missing { 
+    background: rgba(255, 255, 255, 0.1) !important; 
+    color: #d7ccc8 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.recipe-used, .recipe-missing {
+    padding: 6px 12px; border-radius: 8px; font-size: 12px;
+    display: inline-block; margin-right: 5px; margin-bottom: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+/* 6. СЕКЦИИ (Заглавия в списъка) */
+.section-exact { 
+    color: #3e2723 !important; 
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 800;
+    font-size: 14px;
+    border-bottom: 3px solid rgba(62, 39, 35, 0.3) !important; 
+    display: inline-block; margin-bottom: 15px; 
+    padding-bottom: 5px;
+}
+.section-partial { 
+    color: #5d4037 !important; 
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700;
+    font-size: 14px;
+    border-bottom: 2px solid rgba(62, 39, 35, 0.2) !important; 
+    display: inline-block; margin-bottom: 15px; margin-top: 20px;
+}
+
+.arrow-icon {
+    color: rgba(255,255,255,0.7);
+    font-size: 18px;
+}
+
+/* 7. БУТОН ЗА ЗАТВАРЯНЕ */
+.close-cooking {
+    background: rgba(62, 39, 35, 0.1) !important;
+    color: #3e2723 !important;
+    border: 1px solid rgba(62, 39, 35, 0.2) !important;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 20px; right: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.close-cooking:hover {
+    background: #3e2723 !important;
+    color: white !important;
+    transform: rotate(90deg);
+}
+
+/* 8. БУТОН НАЗАД (ГЪЗАРСКИ) */
+.back-btn {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+    
+    padding: 16px 0; /* Малко по-дебел бутон */
+    margin-bottom: 25px;
+    border-radius: 50px; 
+    
+    /* ТИПОГРАФИЯ ЗА БУТОНА */
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 800; /* Extra Bold */
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Повече разстояние за PRO вид */
+    
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 12px;
+    
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.back-btn i { transition: transform 0.3s; }
+.back-btn:hover i { transform: translateX(-5px); }
+
+
+/* 9. ЧЕТЛИВОСТ НА ТЕКСТОВЕТЕ (ПРОДУКТИ / НАЧИН НА ПРИГОТВЯНЕ) */
+#cookingModal p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#cookingModal div > p[style*="uppercase"] {
+    color: #ffcc80 !important; /* Златисто */
+    font-family: 'Montserrat', sans-serif !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    font-weight: 900 !important;
+    letter-spacing: 1px;
+    opacity: 1 !important;
+    margin-bottom: 12px;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 15px 0;
 }

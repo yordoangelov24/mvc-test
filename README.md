@@ -176,3 +176,6 @@ body.dark-mode .close-cooking {
     color: #fff;
 }
 body.dark-mode .close-cooking:hover { background: rgba(255, 255, 255, 0.2); }
+
+
+v gotvene na recepti butona vrushtane nazad e cql red, trqq go napraq da ne e

@@ -18,47 +18,61 @@ export class AppController {
         this.setupAuthListeners();
         this.authModel.monitorAuthState((user, isAdmin) => {
             this.view.updateAuthUI(user, isAdmin);
-            // Това тук сработва, но понякога ПРЕДИ данните да са дошли, затова е празно
             this.refreshPageData(user); 
         });
 
         // 2. Setup Data
         await this.dataModel.fetchAllData();
         
-        // 🔥 НОВО: Веднага покажи данните, след като са заредени!
-        this.refreshPageData(this.authModel.currentUser);
-
         // 3. Setup UI (Dark mode, Tabs, etc)
         this.setupUIListeners();
         this.setupRoutingLogic(); 
+        
+        // Първоначално зареждане на данните
+        this.refreshPageData(this.authModel.currentUser);
     }
 
-    // --- LOGIC: Routing (Какво да заредим?) ---
     refreshPageData(user) {
-        // Ако сме на Index (Хладилник)
+        // Ако сме на Хладилника
         if (document.getElementById("productList")) {
             this.filterProducts();
         }
-        // Ако сме на Recipes (Рецепти)
+        // Ако сме на Рецепти
         if (document.getElementById("recipeGrid")) {
             this.loadRecipesPage(user, false);
         }
-        // Ако сме на Profile
-        if (document.getElementById("favGrid")) {
-            this.loadRecipesPage(user, true); // True = само любими
-        }
     }
 
-    // --- LOGIC: Products & Cart (Index) ---
-    setupRoutingLogic() 
-    {
-        // 1. Търсачка
+    // 🔥 НОВ МЕТОД: Зарежда страницата с рецепти
+    async loadRecipesPage(user, onlyFavorites) {
+        let recipes = this.dataModel.recipes;
+        let userFavs = [];
+
+        // Взимаме любимите, ако има потребител
+        if (user) {
+            userFavs = await this.dataModel.getUserFavorites(user.uid);
+        }
+
+        // Ако е натиснат филтър "Само любими"
+        if (onlyFavorites) {
+            recipes = recipes.filter(r => userFavs.includes(r.title));
+        }
+
+        // Пращаме към View-то да ги нарисува
+        this.view.renderRecipesGrid(recipes, userFavs, (title, btn) => {
+            this.handleFavToggle(title, btn);
+        });
+    }
+
+    // --- ЛОГИКА ЗА ПРОДУКТИ (Index) ---
+    setupRoutingLogic() {
+        // Търсачка (работи и на двете страници, ако ID-то съвпада)
         const searchInput = document.getElementById("searchInput");
         if (searchInput) {
             searchInput.addEventListener("input", () => this.filterProducts());
         }
 
-        // 2. Филтри (Чипове)
+        // Чипове (Категории)
         const chips = document.querySelectorAll(".chip");
         chips.forEach(chip => {
             chip.addEventListener("click", (e) => {
@@ -69,7 +83,22 @@ export class AppController {
             });
         });
 
-        // 3. Бутон "Изчисти количката"
+        // Бутон за любими (в recipes.html)
+        const btnFavFilter = document.getElementById("btnFavFilter");
+        if (btnFavFilter) {
+            btnFavFilter.addEventListener("click", () => {
+                const isActive = btnFavFilter.classList.toggle("active");
+                if(isActive) {
+                    btnFavFilter.style.background = "#d63031"; // По-тъмно червено
+                    this.loadRecipesPage(this.authModel.currentUser, true);
+                } else {
+                    btnFavFilter.style.background = "#ff6b6b"; // Нормално
+                    this.loadRecipesPage(this.authModel.currentUser, false);
+                }
+            });
+        }
+
+        // Изчистване
         const clearBtn = document.getElementById("clearBtn");
         if (clearBtn) clearBtn.onclick = () => {
             this.dataModel.clearCart();
@@ -77,38 +106,28 @@ export class AppController {
             this.view.showToast("Кошницата е изчистена", "info");
         };
 
-        // 4. Бутон "ГОТВИ"
+        // Готвене
         const genBtn = document.getElementById("generateBtn");
         if (genBtn) genBtn.onclick = () => this.handleGenerateRecipe();
 
-        // 5. 🔥 НОВО: Логика за Модала за Готвене
-        // Затваряне от Х-чето
-        if (this.view.elements.closeCookingBtn) {
-            this.view.elements.closeCookingBtn.onclick = () => this.view.toggleCookingModal(false);
-        }
-
-        // Затваряне при клик извън прозореца (на тъмното)
-        window.addEventListener("click", (e) => {
-            if (this.view.elements.cookingModal && e.target === this.view.elements.cookingModal) {
-                this.view.toggleCookingModal(false);
-            }
-        });
+        // Модал за готвене
         const closeCook = document.querySelector(".close-cooking");
         const cookModal = document.getElementById("cookingModal");
-        
         if (closeCook) closeCook.onclick = () => this.view.toggleCookingModal(false);
         window.onclick = (e) => {
             if (e.target === cookModal) this.view.toggleCookingModal(false);
         };
     }
+
     filterProducts() {
+        if (!document.getElementById("productList")) return; // Защита
+        
         const term = document.getElementById("searchInput")?.value.toLowerCase() || "";
         const filtered = this.dataModel.products.filter(p => {
             return p.name.toLowerCase().includes(term) && 
                    (this.currentCategory === "all" || p.category === this.currentCategory);
         });
         
-        // Call View render
         this.view.renderProducts(filtered, (product) => {
             const res = this.dataModel.addToCart(product);
             this.view.updateCartUI(this.dataModel.cart, (id) => {
@@ -118,25 +137,19 @@ export class AppController {
             this.view.showToast(`${res.product.name} добавен!`, "success");
         });
     }
-    // --- LOGIC: Recipes Page ---
-     handleGenerateRecipe() {
-        // 1. Използваме новия метод за търсене (ще го добавим в DataModel след малко)
-        const result = this.dataModel.findAllMatchingRecipes();
 
+    handleGenerateRecipe() {
+        const result = this.dataModel.findAllMatchingRecipes();
         if (result.status === "empty") {
             this.view.showToast("Кошницата е празна!", "error");
             return;
         }
-
         if (result.status === "none") {
             this.view.showToast("Няма подходящи рецепти.", "info");
         }
-
-        // 2. Отваряме модала и показваме резултатите
         this.view.renderCookingResults(result);
         this.view.toggleCookingModal(true);
     }
-    
 
     async handleFavToggle(title, btnElement) {
         if (!this.authModel.currentUser) {
@@ -149,24 +162,16 @@ export class AppController {
         try {
             await this.dataModel.toggleFavorite(this.authModel.currentUser.uid, title, !isFav);
             btnElement.classList.toggle("is-favorite");
-            
-            // Ако сме в профила и махнем любима -> веднага я скриваме
-            if(isFav && document.getElementById("favGrid")) {
-                btnElement.closest(".recipe-card").remove();
-            }
-            
             this.view.showToast(isFav ? "Премахнато" : "Добавено", "success");
         } catch(e) { console.error(e); }
     }
 
-    // --- LOGIC: Admin ---
     setupAdminLogic() {
         const addBtn = document.getElementById("addProductBtn");
         if (addBtn) {
             addBtn.addEventListener("click", async () => {
                 const name = document.getElementById("prodName").value;
                 const cal = document.getElementById("prodCal").value;
-                // ... събираш другите полета
                 
                 if(!name) return this.view.showToast("Име?", "error");
 
@@ -175,7 +180,6 @@ export class AppController {
                         name, 
                         calories: Number(cal),
                         category: document.getElementById("prodCat").value,
-                        // Добави и другите (protein, fat...)
                     });
                     this.view.showToast("Успешно добавено!", "success");
                     this.view.toggleAdminModal(false);
@@ -185,9 +189,7 @@ export class AppController {
         }
     }
 
-    // --- LOGIC: Auth UI Listeners ---
     setupAuthListeners() {
-        // Modal Open/Close
         const btn = document.getElementById("authBtn");
         if(btn) btn.onclick = () => {
             if(this.authModel.currentUser) this.authModel.logout();
@@ -200,7 +202,6 @@ export class AppController {
             this.view.toggleAdminModal(false);
         });
 
-        // Login Logic
         const loginBtn = document.getElementById("loginSubmitBtn");
         if(loginBtn) loginBtn.onclick = async () => {
             const email = document.getElementById("loginEmail").value;
@@ -218,7 +219,6 @@ export class AppController {
             }
         };
 
-        // Register Logic
         const regBtn = document.getElementById("regSubmitBtn");
         if(regBtn) regBtn.onclick = async () => {
              const email = document.getElementById("regEmail").value;
@@ -230,18 +230,22 @@ export class AppController {
              } catch(e) { this.view.showToast(e.message, "error"); }
         };
 
-        // Tabs & Eyes Logic (Copy-Paste from previous steps)
         this.setupTabsAndEyes();
         this.setupAdminLogic();
     }
 
     setupUIListeners() {
-        // Dark Mode
+        // Dark Mode Logic
         const toggle = document.querySelector('.theme-switch input');
+        
+        // Проверка при зареждане
         const theme = localStorage.getItem('theme');
-        if(theme) document.body.classList.add(theme);
-        if(theme === 'dark-mode' && toggle) toggle.checked = true;
+        if(theme === 'dark-mode') {
+            document.body.classList.add('dark-mode');
+            if(toggle) toggle.checked = true;
+        }
 
+        // Слушател за промяна
         if(toggle) toggle.onchange = (e) => {
             if(e.target.checked) {
                 document.body.classList.add('dark-mode');
@@ -273,19 +277,20 @@ export class AppController {
                 tabLogin.classList.remove("active");
             };
         }
-         function setupEye(toggleId, inputId) {
-        const eyeBtn = document.getElementById(toggleId);
-        const input = document.getElementById(inputId);
-        if (eyeBtn && input) {
-            eyeBtn.addEventListener("click", () => {
-                const type = input.getAttribute("type") === "password" ? "text" : "password";
-                input.setAttribute("type", type);
-                eyeBtn.classList.toggle("fa-eye");
-                eyeBtn.classList.toggle("fa-eye-slash");
-            });
+        
+        function setupEye(toggleId, inputId) {
+            const eyeBtn = document.getElementById(toggleId);
+            const input = document.getElementById(inputId);
+            if (eyeBtn && input) {
+                eyeBtn.addEventListener("click", () => {
+                    const type = input.getAttribute("type") === "password" ? "text" : "password";
+                    input.setAttribute("type", type);
+                    eyeBtn.classList.toggle("fa-eye");
+                    eyeBtn.classList.toggle("fa-eye-slash");
+                });
+            }
         }
-    }
-    setupEye("toggleLoginPass", "loginPass");
-    setupEye("toggleRegPass", "regPass");
+        setupEye("toggleLoginPass", "loginPass");
+        setupEye("toggleRegPass", "regPass");
     }
 }

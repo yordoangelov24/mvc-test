@@ -1,5 +1,7 @@
 /* --- ГЛАВЕН CSS ФАЙЛ (MAIN.CSS) --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* 🔥 НОВИТЕ ШРИФТОВЕ: Montserrat (Гъзарски) + Nunito (Четлив) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
 
 :root {
     /* --- JUICY PEACH PALETTE 🍑 --- */
@@ -21,7 +23,11 @@ body {
     background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
     background-attachment: fixed;
     color: var(--text-main);
-    font-family: 'Poppins', sans-serif;
+    
+    /* 🔥 Основен шрифт за всичко (Nunito) */
+    font-family: 'Nunito', sans-serif; 
+    font-weight: 600; /* Малко по-плътен за четимост */
+    
     margin: 0;
     overflow: hidden; 
     height: 100vh;
@@ -56,26 +62,29 @@ body {
 }
 
 .logo {
-    font-size: 22px;
-    font-weight: 700;
+    font-family: 'Montserrat', sans-serif; /* Логото трябва да е Montserrat */
+    font-size: 24px;
+    font-weight: 900; /* Ултра дебело */
+    letter-spacing: -1px;
     color: var(--primary);
     margin-bottom: 40px;
     display: flex; align-items: center; gap: 8px;
     background: rgba(255,255,255,0.8);
-    padding: 10px 15px;
-    border-radius: 16px;
+    padding: 12px 18px;
+    border-radius: 18px;
     width: fit-content;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .menu-label {
+    font-family: 'Montserrat', sans-serif;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     padding-left: 10px;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px; /* Разпънато */
 }
 
 .category-menu {
@@ -92,8 +101,9 @@ body {
     text-align: left;
     border-radius: 14px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
+    font-family: 'Nunito', sans-serif; /* Заоблен и мек шрифт за менюто */
+    font-size: 15px;
+    font-weight: 700;
     transition: all 0.3s ease;
 }
 
@@ -108,7 +118,7 @@ body {
     color: #e55039;
     border-left: 4px solid var(--primary);
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.15);
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .sidebar-footer { margin-top: auto; }
@@ -121,10 +131,13 @@ body {
     color: white;
     border: none;
     border-radius: 16px;
-    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transition: 0.3s;
+    letter-spacing: 1px;
 }
 .auth-btn-side:hover { transform: translateY(-3px); }
 
@@ -148,7 +161,12 @@ body {
 }
 
 .top-bar h1 {
-    font-weight: 700; margin: 0; font-size: 26px; color: var(--text-main);
+    font-family: 'Montserrat', sans-serif; /* Гъзарско заглавие */
+    font-weight: 800; 
+    margin: 0; 
+    font-size: 28px; 
+    color: var(--text-main);
+    letter-spacing: -0.5px;
 }
 
 /* Търсачка */
@@ -159,13 +177,19 @@ body {
     border-radius: 50px;
     width: 240px;
     outline: none;
-    font-family: inherit;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    color: var(--text-main);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .search-box-neon input:focus {
     width: 280px; border-color: var(--primary);
     box-shadow: 0 0 20px rgba(255, 107, 107, 0.25);
+}
+.search-box-neon input::placeholder {
+    color: #aaa;
+    font-weight: 500;
 }
 
 /* --- 3. ДЯСНА ЧАСТ --- */
@@ -180,8 +204,10 @@ body {
     border: none;
     padding: 8px 16px;
     border-radius: 12px;
-    font-weight: 600; font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 11px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
     transition: all 0.2s ease;
@@ -189,6 +215,28 @@ body {
 }
 .clear-link:hover { transform: translateY(-2px); filter: brightness(1.1); }
 .clear-link:active { transform: translateY(0); }
+
+/* --- ПРОДУКТОВИ КАРТИ (Трябва да са и тук, за да хванат шрифта) --- */
+.p-thumb {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 800 !important; /* Дебела буква */
+}
+.p-name {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.3px;
+}
+.p-nutrition {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+}
+.add-btn {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    font-size: 12px !important;
+}
 
 /* --- СКРОЛБАР --- */
 ::-webkit-scrollbar { width: 6px; }
