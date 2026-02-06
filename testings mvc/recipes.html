@@ -35,23 +35,29 @@
             </div>
 
             <div class="menu-label">НАВИГАЦИЯ</div>
-            <div class="category-menu">
+            <div class="nav-group">
                 <a href="index.html" class="menu-btn" style="text-decoration:none;">
-                    🏠 <span class="menu-text">Към Хладилника</span>
+                    🏠 <span class="menu-text">Хладилник</span>
                 </a>
-                <button class="menu-btn active">
+                <a href="recipes.html" class="menu-btn active" style="text-decoration:none;">
                     📖 <span class="menu-text">Рецепти</span>
-                </button>
+                </a>
             </div>
 
             <div class="sidebar-footer">
-                <button id="authBtn" class="auth-btn-side">🔑 Вход</button>
+                <button id="authBtn" class="auth-btn-side">🔑 <span class="menu-text">Вход</span></button>
             </div>
         </aside>
 
         <main class="main-content">
             <div class="top-bar">
                 <h1>Готварска Книга 🍳</h1>
+                <div class="search-box-neon">
+                     <input type="text" id="recipeSearch" placeholder="🔎 Търси рецепта...">
+                </div>
+            </div>
+
+             <div style="margin-bottom: 20px; display:flex; gap:10px; overflow-x:auto; padding-bottom:5px;">
                 <button id="btnFavFilter" class="clear-link" style="background:#ff6b6b; border:none; color:white; padding: 8px 15px; border-radius: 20px; cursor: pointer;">
                     ❤️ Само любими
                 </button>
@@ -64,10 +70,12 @@
             </div>
         </main>
 
-        <aside class="right-panel glass-dark" style="justify-content:center; align-items:center; text-align:center; color:var(--text-muted);">
+        <aside class="right-panel glass-dark" style="justify-content:center; align-items:center; text-align:center; color:var(--text-muted); padding-top:100px;">
             <h2>👨‍🍳 Съвет</h2>
-            <p style="margin-top: 15px; padding: 0 10px;">Кликни на сърцето, за да запазиш любимите си рецепти.</p>
-            <div style="font-size:50px; margin-top:20px;">🥗</div>
+            <p style="margin:20px 0; line-height:1.6;">
+                Кликни на сърцето ❤️ върху рецепта, за да я запазиш в "Любими" и да я намираш по-лесно.
+            </p>
+            <div style="font-size:60px; margin-top:20px; opacity:0.8;">🥗</div>
         </aside>
 
     </div>
@@ -109,7 +117,7 @@
     </div>
 
     <button id="mobileCartToggle" style="
-        display: none; /* Скрит на десктоп */
+        display: none;
         position: fixed;
         bottom: 90px; right: 20px;
         width: 60px; height: 60px;

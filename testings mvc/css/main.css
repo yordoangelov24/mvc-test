@@ -1,21 +1,15 @@
-/* --- ГЛАВЕН CSS ФАЙЛ (MAIN.CSS) --- */
+/* --- ГЛАВЕН CSS ФАЙЛ (MAIN.CSS) - FINAL MOBILE FIX --- */
 
-/* 🔥 НОВИТЕ ШРИФТОВЕ: Montserrat (Гъзарски) + Nunito (Четлив) */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
 
+* { box-sizing: border-box; }
+
 :root {
-    /* --- JUICY PEACH PALETTE 🍑 --- */
     --glass-bg: rgba(255, 255, 255, 0.55);
     --glass-border: rgba(255, 255, 255, 0.8);
-    
-    --primary: #FF6B6B;         /* Апетитен Корал */
-    --secondary: #fda085;       /* Праскова */
-    
-    --text-main: #2d1e1e;       /* Тъмен шоколад */
-    --text-muted: #847676;      /* Сиво-кафяво */
-    --danger: #e74c3c;
-    
-    --shadow-glass: 0 8px 32px 0 rgba(255, 107, 107, 0.20);
+    --primary: #FF6B6B;
+    --text-main: #2d1e1e;
+    --text-muted: #847676;
     --radius: 24px;
 }
 
@@ -23,286 +17,294 @@ body {
     background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
     background-attachment: fixed;
     color: var(--text-main);
-    
-    /* 🔥 Основен шрифт за всичко (Nunito) */
     font-family: 'Nunito', sans-serif; 
-    font-weight: 600; /* Малко по-плътен за четимост */
-    
+    font-weight: 600;
     margin: 0;
     overflow: hidden; 
     height: 100vh;
+    width: 100vw;
 }
 
-/* --- ОБЩА СТРУКТУРА (GRID LAYOUT) --- */
+/* --- LAYOUT --- */
 .app-layout {
     display: grid;
-    grid-template-columns: 260px 1fr 340px; /* Ляво | Център | Дясно */
+    grid-template-columns: 260px 1fr 350px; 
     height: 100vh;
     padding: 20px;
     gap: 20px;
-    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
-/* --- СТЪКЛЕНИ ПАНЕЛИ --- */
 .sidebar, .right-panel, .main-content {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-glass);
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
 }
 
-/* --- 1. ЛЯВА ЛЕНТА (SIDEBAR) --- */
-.sidebar {
-    padding: 30px 20px;
-    z-index: 2;
-}
+/* --- SIDEBAR (PC) --- */
+.sidebar { padding: 30px 20px; z-index: 2; overflow-y: auto; }
 
 .logo {
-    font-family: 'Montserrat', sans-serif; /* Логото трябва да е Montserrat */
-    font-size: 24px;
-    font-weight: 900; /* Ултра дебело */
-    letter-spacing: -1px;
-    color: var(--primary);
-    margin-bottom: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px; font-weight: 900; letter-spacing: -1px;
+    color: var(--primary); margin-bottom: 25px;
     display: flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.8);
-    padding: 12px 18px;
-    border-radius: 18px;
-    width: fit-content;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.8); padding: 12px 18px; border-radius: 18px;
+    width: fit-content; flex-shrink: 0;
 }
+
+/* Навигация (Home/Recipes) - Wrapper */
+.nav-group {
+    margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px;
+    display: flex; flex-direction: column; gap: 8px;
+}
+
+.category-menu { display: flex; flex-direction: column; gap: 8px; }
 
 .menu-label {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    padding-left: 10px;
-    letter-spacing: 1.5px; /* Разпънато */
-}
-
-.category-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
+    padding-left: 10px; letter-spacing: 1.5px; flex-shrink: 0;
 }
 
 .menu-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 12px 15px;
-    text-align: left;
-    border-radius: 14px;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif; /* Заоблен и мек шрифт за менюто */
-    font-size: 15px;
-    font-weight: 700;
-    transition: all 0.3s ease;
+    background: transparent; border: none; color: var(--text-muted);
+    padding: 12px 15px; text-align: left; border-radius: 14px;
+    cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+    transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; width: 100%;
 }
+.menu-btn:hover { background: rgba(255,255,255,0.6); color: var(--primary); transform: translateX(5px); }
+.menu-btn.active { background: white; color: #e55039; font-weight: 800; border-left: 4px solid var(--primary); }
 
-.menu-btn:hover {
-    background: rgba(255,255,255,0.6);
-    color: var(--primary);
-    transform: translateX(5px);
-}
-
-.menu-btn.active {
-    background: white;
-    color: #e55039;
-    border-left: 4px solid var(--primary);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.15);
-    font-weight: 800;
-}
-
-.sidebar-footer { margin-top: auto; }
-
-/* Специален бутон само за sidebar-а */
+/* Бутон ВХОД (PC) */
+.sidebar-footer { margin-top: auto; padding-top: 20px; }
 .auth-btn-side {
-    width: 100%;
-    padding: 14px;
+    width: 100%; padding: 14px;
     background: linear-gradient(135deg, var(--text-main) 0%, #4a4a4a 100%);
-    color: white;
-    border: none;
-    border-radius: 16px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
+    color: white; border: none; border-radius: 16px;
+    font-family: 'Montserrat', sans-serif; font-weight: 700; text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: 0.3s;
-    letter-spacing: 1px;
-}
-.auth-btn-side:hover { transform: translateY(-3px); }
-
-/* --- 2. ЦЕНТРАЛНА ЧАСТ --- */
-.main-content {
-    padding: 0 30px;
-    overflow-y: auto;
-    background: rgba(255,255,255, 0.45); 
 }
 
-.top-bar {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    padding: 30px 0 20px 0;
-    margin-bottom: 10px;
-    display: flex; justify-content: space-between; align-items: center;
-    background: rgba(255,255,255,0.01);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.4);
-}
-
-.top-bar h1 {
-    font-family: 'Montserrat', sans-serif; /* Гъзарско заглавие */
-    font-weight: 800; 
-    margin: 0; 
-    font-size: 28px; 
-    color: var(--text-main);
-    letter-spacing: -0.5px;
-}
-
-/* Търсачка */
-.search-box-neon input {
-    background: white;
-    border: 1px solid transparent;
-    padding: 14px 24px;
-    border-radius: 50px;
-    width: 240px;
-    outline: none;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 600;
-    color: var(--text-main);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-.search-box-neon input:focus {
-    width: 280px; border-color: var(--primary);
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.25);
-}
-.search-box-neon input::placeholder {
-    color: #aaa;
-    font-weight: 500;
-}
-
-/* --- 3. ДЯСНА ЧАСТ --- */
-.right-panel {
-    padding: 25px;
-}
-
-/* Бутон "Изчисти" (Clear) */
-.clear-link {
-    background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
-    color: white !important;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 12px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700; font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
-    transition: all 0.2s ease;
-    text-decoration: none; display: inline-block;
-}
-.clear-link:hover { transform: translateY(-2px); filter: brightness(1.1); }
-.clear-link:active { transform: translateY(0); }
-
-/* --- ПРОДУКТОВИ КАРТИ (Трябва да са и тук, за да хванат шрифта) --- */
-.p-thumb {
-    font-family: 'Montserrat', sans-serif !important;
-    font-weight: 800 !important; /* Дебела буква */
-}
-.p-name {
-    font-family: 'Montserrat', sans-serif !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.3px;
-}
-.p-nutrition {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px;
-}
-.add-btn {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 800 !important;
-    text-transform: uppercase;
-    font-size: 12px !important;
-}
-
-/* --- СКРОЛБАР --- */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #f6d365, #fda085);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-
-/* --- МОБИЛНА ВЕРСИЯ --- */
-@media (max-width: 1000px) {
-    .app-layout { 
-        grid-template-columns: 80px 1fr; 
-        padding: 10px; gap: 10px; 
-    }
-    .right-panel { display: none; }
-    .sidebar { align-items: center; padding: 20px 5px; }
-    .menu-label, .logo span { display: none; }
-    .menu-btn { text-align: center; justify-content: center; }
-}
-
-/* --- THEME SWITCH --- */
-.theme-switch-wrapper {
-    display: flex; align-items: center; margin-bottom: 20px; gap: 10px;
-}
-.theme-switch {
-    display: inline-block; height: 30px; position: relative; width: 60px;
-}
+/* Theme Switch */
+.theme-switch-wrapper { display: flex; align-items: center; margin-bottom: 20px; gap: 10px; flex-shrink: 0; }
+.theme-switch { display: inline-block; height: 30px; position: relative; width: 60px; }
 .theme-switch input { display: none; }
 .slider {
-    background-color: rgba(0,0,0,0.1);
-    bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0;
+    background-color: rgba(0,0,0,0.1); bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0;
     transition: .4s; border-radius: 34px; border: 1px solid var(--glass-border);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 5px; font-size: 14px;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 5px; font-size: 14px;
 }
 .slider:before {
-    background-color: white;
-    bottom: 3px; content: ""; height: 22px; left: 4px; position: absolute;
-    transition: .4s; width: 22px; border-radius: 50%; z-index: 2;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    background-color: white; bottom: 3px; content: ""; height: 22px; left: 4px; position: absolute;
+    transition: .4s; width: 22px; border-radius: 50%; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 input:checked + .slider { background-color: var(--primary); }
 input:checked + .slider:before { transform: translateX(28px); }
 
-/* --- DARK MODE GLOBAL --- */
+/* --- MAIN CONTENT --- */
+.main-content { padding: 0 30px; overflow-y: hidden; background: rgba(255,255,255, 0.45); }
+
+.top-bar {
+    padding: 25px 0 15px 0; margin-bottom: 5px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.4); flex-shrink: 0;
+}
+.top-bar h1 { font-family: 'Montserrat', sans-serif; font-weight: 800; margin: 0; font-size: 26px; }
+
+.product-grid {
+    overflow-y: auto; flex: 1; padding-bottom: 20px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px; align-content: start;
+}
+
+.search-box-neon input {
+    background: white; border: 1px solid transparent; padding: 12px 20px;
+    border-radius: 50px; width: 220px; outline: none;
+    font-family: 'Nunito', sans-serif; font-weight: 600;
+}
+
+/* 🔥 КАТЕГОРИИ НА ТЕЛЕФОН (СКРОЛВАТ СЕ!) */
+.mobile-categories-wrapper {
+    display: none; 
+    overflow-x: auto; /* ВЪРНАТ СКРОЛ */
+    white-space: nowrap; 
+    gap: 10px; padding-bottom: 10px; margin-bottom: 15px;
+    scrollbar-width: none; flex-shrink: 0;
+}
+.mobile-categories-wrapper::-webkit-scrollbar { display: none; }
+.mobile-chip {
+    background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8);
+    padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700;
+    color: var(--text-muted); cursor: pointer; flex-shrink: 0; font-family: 'Montserrat', sans-serif;
+}
+.mobile-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* --- RIGHT PANEL --- */
+.right-panel { padding: 25px; overflow: hidden; }
+.cart-header, .nutrition-bars, .cart-actions { flex-shrink: 0; }
+.nutrition-bars { margin-bottom: 15px; }
+#itemsContainer { flex: 1; overflow-y: auto; margin-bottom: 15px; padding-right: 5px; min-height: 0; }
+.cart-actions { margin-top: auto; }
+
+.clear-link {
+    background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+    color: white !important; border: none; padding: 6px 12px;
+    border-radius: 10px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 10px;
+    text-transform: uppercase; cursor: pointer; text-decoration: none;
+}
+
+/* --- ADMIN MODAL & FAB --- */
+.admin-modal {
+    display: none; 
+    position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center;
+    backdrop-filter: blur(5px);
+}
+.admin-content {
+    background: white; padding: 30px; border-radius: 24px; width: 90%; max-width: 400px;
+    display: flex; flex-direction: column; gap: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.admin-content input, .admin-content select {
+    padding: 12px; border: 1px solid #ddd; border-radius: 12px; width: 100%; font-family: inherit;
+}
+.close-admin {
+    position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #888;
+}
+
+#adminFab {
+    display: none !important;
+    position: fixed; bottom: 30px; left: 30px;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: #2d3436; color: white; border: none;
+    font-size: 24px; cursor: pointer; z-index: 1000;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.3s;
+}
+#adminFab:hover { transform: scale(1.1); }
+#adminFab.visible { display: flex !important; align-items: center; justify-content: center; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #f6d365, #fda085); border-radius: 10px; }
+
+/* Dark Mode */
 body.dark-mode {
     background: linear-gradient(120deg, #2b1055 0%, #7597de 100%);
-    --glass-bg: rgba(0, 0, 0, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --text-main: #ffffff;
-    --text-muted: #b0b0b0;
-    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+    --glass-bg: rgba(0, 0, 0, 0.6); --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff; --text-muted: #b0b0b0; --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+}
+body.dark-mode .sidebar, body.dark-mode .main-content, body.dark-mode .right-panel, body.dark-mode .logo {
+    background: var(--glass-bg); border-color: var(--glass-border); box-shadow: var(--shadow-glass);
+}
+body.dark-mode .search-box-neon input, body.dark-mode .admin-content, body.dark-mode .admin-content input {
+    background: #2d2d3d; color: white; border-color: rgba(255,255,255,0.1);
+}
+body.dark-mode .mobile-chip { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #ccc; }
+body.dark-mode .mobile-chip.active { background: var(--primary); color: white; }
+
+
+/* ===================================================
+   📱 RESPONSIVE & MOBILE RULES 
+   =================================================== */
+
+/* 1. LAPTOP (1024px - 1400px) */
+@media (max-width: 1400px) {
+    .app-layout { grid-template-columns: 110px 1fr 320px; }
+    .sidebar .logo span, .menu-label, .menu-text { display: none !important; }
+    .sidebar .logo { justify-content: center; padding: 10px; width: 100%; }
+    
+    .sidebar .nav-group,
+    .sidebar .category-menu {
+        display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .menu-btn { justify-content: center; padding: 10px; font-size: 22px; height: 50px; }
+    .sidebar { padding: 20px 10px; }
+    .auth-btn-side { font-size: 10px; padding: 10px 5px; }
 }
 
-body.dark-mode .sidebar, 
-body.dark-mode .main-content, 
-body.dark-mode .right-panel,
-body.dark-mode .logo {
-    background: var(--glass-bg);
-    border-color: var(--glass-border);
-    box-shadow: var(--shadow-glass);
-}
+/* 2. MOBILE (Under 950px) */
+@media (max-width: 950px) {
+    .app-layout { display: block; height: auto; padding: 10px 10px 90px 10px; overflow-y: auto; }
+    body { overflow: auto; height: auto; }
 
-body.dark-mode .search-box-neon input {
-    background: rgba(255, 255, 255, 0.05);
-    color: white; border-color: rgba(255,255,255,0.1);
+    /* 🔥 ДОЛЕН БАР - БЕЗ СКРОЛ (Flexbox) */
+    .sidebar {
+        position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+        display: flex !important; /* Гъвкава кутия */
+        flex-direction: row; 
+        justify-content: space-between; /* Разпределя ги */
+        align-items: center;
+        
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(15px); border: none; border-top: 1px solid rgba(0,0,0,0.1);
+        z-index: 5000; padding: 0 20px; margin: 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        border-radius: 20px 20px 0 0;
+        
+        overflow: hidden !important; /* СПИРАМЕ СКРОЛА НА БАРА */
+    }
+    body.dark-mode .sidebar { background: rgba(30, 30, 40, 0.95) !important; border-top: 1px solid rgba(255,255,255,0.1); }
+
+    /* Скриваме всичко излишно (Ядките и категориите) */
+    .sidebar .logo, .sidebar .theme-switch-wrapper, .menu-label, .sidebar .category-menu {
+        display: none !important; 
+    }
+    
+    /* НАВИГАЦИЯ (ХЛАДИЛНИК + РЕЦЕПТИ) - Лява част */
+    .sidebar .nav-group {
+        display: flex !important; 
+        flex: 1; /* Заема колкото може място */
+        justify-content: space-around; /* Разпределя иконите */
+        border: none; margin: 0; padding: 0;
+    }
+    
+    /* ВХОД - Дясна част */
+    .sidebar-footer {
+        display: flex !important; margin: 0; padding: 0; margin-left: 20px;
+        padding-left: 10px; border-left: 1px solid rgba(0,0,0,0.1); /* Чертичка */
+    }
+    .auth-btn-side {
+        background: none; border: none; box-shadow: none; color: #888;
+        padding: 5px; font-size: 26px; width: auto;
+    }
+    .auth-btn-side .menu-text { display: none; } 
+
+    /* ИКОНИТЕ */
+    .menu-btn {
+        background: none !important; border: none !important; box-shadow: none !important;
+        padding: 5px !important; font-size: 28px; color: #888; width: auto; justify-content: center;
+    }
+    .menu-btn.active { color: var(--primary); transform: translateY(-5px); }
+    .menu-text { display: none; }
+
+    /* Категориите (под търсачката) - СКРОЛВАТ СЕ */
+    .mobile-categories-wrapper { 
+        display: flex; 
+        /* Тук вече е върнато на скрол, както искаше */
+    }
+
+    .main-content {
+        width: 100%; height: auto; overflow: visible; padding: 5px;
+        background: transparent !important; border: none; box-shadow: none;
+    }
+    
+    .product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; overflow: visible; padding-bottom: 0; }
+    .top-bar { flex-direction: column; gap: 10px; align-items: flex-start; padding-top: 10px; }
+    .search-box-neon input { width: 100%; }
+
+    .right-panel {
+        display: flex; position: fixed; top: 0; right: -100%;
+        width: 85%; height: 100vh; z-index: 6000;
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: white; padding-top: 60px;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+    }
+    .right-panel.active { right: 0; }
+    body.dark-mode .right-panel { background: #1a1a2e; }
+
+    #mobileCartToggle { display: flex !important; }
+    #adminFab { bottom: 100px; left: 20px; }
 }

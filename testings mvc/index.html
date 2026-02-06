@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Smart Fridge</title>
+    <title>Smart Fridge OS</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -12,52 +12,51 @@
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/auth.css">
-    
-    
 </head>
 <body>
-  
+
+    <div id="toast-container" class="toast-container"></div>
+
     <div class="app-layout">
-    
+   
         <aside class="sidebar glass-dark">
             <div class="logo">
                 <span>⚡ FRIDGE</span> <span style="background:var(--text-main); color:white; padding:2px 6px; border-radius:6px; font-size:12px;">OS</span>
             </div>
-             <div class="theme-switch-wrapper">
-    <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="checkbox" />
-        <div class="slider round">
-            <span class="icon-sun">☀️</span>
-            <span class="icon-moon">🌙</span>
-        </div>
-    </label>
-    <span class="mode-label">Mode</span>
-</div>
-<div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px;">
-    
-    <a href="index.html" class="menu-btn active" style="text-decoration:none; display:flex; align-items:center; gap:10px;">
-        🏠 Хладилник
-    </a>
+            
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider round">
+                        <span class="icon-sun">☀️</span>
+                        <span class="icon-moon">🌙</span>
+                    </div>
+                </label>
+            </div>
 
-    <a href="recipes.html" class="menu-btn" style="text-decoration:none; display:flex; align-items:center; gap:10px;">
-        📖 Рецепти
-    </a>
+            <div class="nav-group">
+                <a href="index.html" class="menu-btn active" style="text-decoration:none;">
+                    🏠 <span class="menu-text">Хладилник</span>
+                </a>
+                <a href="recipes.html" class="menu-btn" style="text-decoration:none;">
+                    📖 <span class="menu-text">Рецепти</span>
+                </a>
+            </div>
 
-</div>
             <div class="menu-label">Категории</div>
             <nav class="category-menu">
-                <button class="menu-btn chip active" data-category="all">🌍 Всички</button>
-                <button class="menu-btn chip" data-category="Млечни">🥛 Млечни</button>
-                <button class="menu-btn chip" data-category="Месо">🥩 Месо</button>
-                <button class="menu-btn chip" data-category="Зеленчуци">🥦 Зеленчуци</button>
-                <button class="menu-btn chip" data-category="Плодове">🍎 Плодове</button>
-                <button class="menu-btn chip" data-category="Сладко">🍫 Сладко</button>
-                <button class="menu-btn chip" data-category="Зърнени">🍞 Зърнени</button>
-                <button class="menu-btn chip" data-category="Ядки">🥜 Ядки</button>
+                <button class="menu-btn chip active" data-category="all">🌍 <span class="menu-text">Всички</span></button>
+                <button class="menu-btn chip" data-category="Млечни">🥛 <span class="menu-text">Млечни</span></button>
+                <button class="menu-btn chip" data-category="Месо">🥩 <span class="menu-text">Месо</span></button>
+                <button class="menu-btn chip" data-category="Зеленчуци">🥦 <span class="menu-text">Зеленчуци</span></button>
+                <button class="menu-btn chip" data-category="Плодове">🍎 <span class="menu-text">Плодове</span></button>
+                <button class="menu-btn chip" data-category="Сладко">🍫 <span class="menu-text">Сладко</span></button>
+                <button class="menu-btn chip" data-category="Зърнени">🍞 <span class="menu-text">Зърнени</span></button>
+                <button class="menu-btn chip" data-category="Ядки">🥜 <span class="menu-text">Ядки</span></button>
             </nav>
 
             <div class="sidebar-footer">
-                <button id="authBtn" class="auth-btn-side">🔑 Вход</button>
+                <button id="authBtn" class="auth-btn-side">🔑 <span class="menu-text">Вход</span></button>
             </div>
         </aside>
 
@@ -68,6 +67,17 @@
                     <input type="text" id="searchInput" placeholder="🔎 Търси продукт...">
                 </div>
             </header>
+
+            <div class="mobile-categories-wrapper">
+                <button class="mobile-chip active" data-category="all">Всички</button>
+                <button class="mobile-chip" data-category="Млечни">🥛 Млечни</button>
+                <button class="mobile-chip" data-category="Месо">🥩 Месо</button>
+                <button class="mobile-chip" data-category="Зеленчуци">🥦 Зеленчуци</button>
+                <button class="mobile-chip" data-category="Плодове">🍎 Плодове</button>
+                <button class="mobile-chip" data-category="Сладко">🍫 Сладко</button>
+                <button class="mobile-chip" data-category="Зърнени">🍞 Зърнени</button>
+                <button class="mobile-chip" data-category="Ядки">🥜 Ядки</button>
+            </div>
 
             <div class="product-grid" id="productList">
                 </div>
@@ -100,73 +110,51 @@
             <div class="cart-actions">
                 <button id="generateBtn" class="neon-btn-full">👨‍🍳 ГОТВИ</button>
             </div>
-
-            <div class="recipe-box-dark" id="recipeBox" style="display: none;">
-                <h3>Резултат:</h3>
-                <div id="recipeText"></div>
-            </div>
         </aside>
 
     </div>
 
-   <div id="authModal" class="modal">
-    <div class="modal-content glass-dark">
-        <span class="close">&times;</span>
-        
-        <div class="auth-tabs">
-            <button id="tabLogin" class="auth-tab active">Вход</button>
-            <button id="tabRegister" class="auth-tab">Регистрация</button>
-        </div>
-        
-        <div id="loginForm" class="auth-form-container active">
-            <h2 style="text-align:center; color:white; margin-bottom:20px;">Добре дошъл! 👋</h2>
+    <div id="authModal" class="modal">
+        <div class="modal-content glass-dark">
+            <span class="close">&times;</span>
             
-            <div class="input-group">
-                <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="loginEmail" placeholder="Твоят Email" class="auth-input-modern">
+            <div class="auth-tabs">
+                <button id="tabLogin" class="auth-tab active">Вход</button>
+                <button id="tabRegister" class="auth-tab">Регистрация</button>
             </div>
-
-           <div class="input-group">
-              <i class="fas fa-lock input-icon"></i>
-              <input type="password" id="loginPass" placeholder="Парола" class="auth-input-modern">
-              <i class="fas fa-eye show-pass-btn" id="toggleLoginPass"></i>
-            </div>
-
-               <div style="text-align: right; margin-bottom: 15px;">
-               <a href="#" id="forgotPassBtn" style="color: #bbb; font-size: 12px; text-decoration: none;">Забравена парола?</a>
-               </div>
-
-            <button id="loginSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">ВЛЕЗ</button>
-        </div>
-
-        <div id="registerForm" class="auth-form-container" style="display:none;">
-            <h2 style="text-align:center; color:white; margin-bottom:20px;">Нов профил 🚀</h2>
             
-            <div class="input-group">
-                <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="regEmail" placeholder="Нов Email" class="auth-input-modern">
+            <div id="loginForm" class="auth-form-container active">
+                <h2 style="text-align:center; color:white; margin-bottom:20px;">Добре дошъл! 👋</h2>
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="loginEmail" placeholder="Твоят Email" class="auth-input-modern">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="loginPass" placeholder="Парола" class="auth-input-modern">
+                    <i class="fas fa-eye show-pass-btn" id="toggleLoginPass"></i>
+                </div>
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="#" id="forgotPassBtn" style="color: #bbb; font-size: 12px; text-decoration: none;">Забравена парола?</a>
+                </div>
+                <button id="loginSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">ВЛЕЗ</button>
             </div>
 
-           <div class="input-group">
-    <i class="fas fa-lock input-icon"></i>
-    <input type="password" id="regPass" placeholder="Измисли парола" class="auth-input-modern">
-    <i class="fas fa-eye show-pass-btn" id="toggleRegPass"></i>
-</div>
-
-<div class="strength-container" style="margin-top: -10px; margin-bottom: 15px;">
-    <div class="strength-bar">
-        <div id="strengthFill" style="width: 0%;"></div>
-    </div>
-    <div id="strengthText" style="font-size: 11px; color: #888; text-align: right; margin-top: 3px;">
-        Парола...
-    </div>
-</div>
-            <button id="regSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">РЕГИСТРАЦИЯ</button>
+            <div id="registerForm" class="auth-form-container" style="display:none;">
+                <h2 style="text-align:center; color:white; margin-bottom:20px;">Нов профил 🚀</h2>
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="regEmail" placeholder="Нов Email" class="auth-input-modern">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="regPass" placeholder="Измисли парола" class="auth-input-modern">
+                    <i class="fas fa-eye show-pass-btn" id="toggleRegPass"></i>
+                </div>
+                <button id="regSubmitBtn" class="neon-btn-full" style="width:100%; margin-top:20px;">РЕГИСТРАЦИЯ</button>
+            </div>
         </div>
     </div>
-</div>
-
-   <button id="adminFab" class="admin-fab">⚙️</button>
 
     <div id="adminModal" class="admin-modal">
         <div class="admin-content">
@@ -188,17 +176,34 @@
             <button id="addProductBtn" class="neon-btn-full">Запиши в базата</button>
         </div>
     </div>
-<div id="cookingModal" class="modal">
-    <div class="modal-content glass-dark" style="max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto;">
-        <span class="close-cooking" style="position:absolute; right:20px; top:15px; cursor:pointer; font-size:24px;">&times;</span>
-        
-        <h2 style="text-align:center; margin-bottom:20px;">👨‍🍳 Какво можеш да сготвиш?</h2>
-        
-        <div id="cookingResultsList" style="display:flex; flex-direction:column; gap:20px;">
-            </div>
-    </div>
-</div>
 
-<script type="module" src="./js/main.js"></script>
+    <div id="cookingModal" class="modal">
+        <div class="modal-content glass-dark" style="max-width: 800px; width: 95%;">
+            <span class="close-cooking" style="position:absolute; right:20px; top:15px; cursor:pointer; font-size:24px;">&times;</span>
+            <div id="cookingResultsList" style="display:flex; flex-direction:column; gap:20px; max-height:80vh; overflow-y:auto;">
+                </div>
+        </div>
+    </div>
+
+    <button id="adminFab" class="admin-fab">⚙️</button>
+
+    <button id="mobileCartToggle" style="
+        display: none;
+        position: fixed;
+        bottom: 90px; right: 20px;
+        width: 60px; height: 60px;
+        background: var(--primary, #FF6B6B);
+        color: white;
+        border: none; border-radius: 50%;
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        z-index: 1500;
+        font-size: 24px;
+        cursor: pointer;
+        align-items: center; justify-content: center;
+    ">
+        🛒
+    </button>
+
+    <script type="module" src="./js/main.js"></script>
 </body>
 </html>
