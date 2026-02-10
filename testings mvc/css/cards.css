@@ -131,3 +131,109 @@ body.dark-mode .recipe-card {
     border-color: rgba(255,255,255,0.1);
 }
 body.dark-mode .recipe-card p { color: #ccc; }
+
+/* 1. Това оправя "грозната" лента в целия сайт и маха долния скрол */
+::-webkit-scrollbar {
+    width: 6px;  /* Тънка лента */
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent; /* Без фон */
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 107, 107, 0.5); /* Цвят на темата (полупрозрачен) */
+    border-radius: 10px; /* Заобляне */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #FF6B6B; /* Плътен цвят при ховър */
+    display: none; /* Скрива лентата при ховър */
+}
+
+/* 2. Конкретно за списъка с рецепти (маха долния скрол) */
+#cookingResultsList, .product-grid {
+    overflow-x: hidden !important; /* 🔥 Скрива долния скролбар */
+    padding-right: 5px;            /* Място за скрола да не закрива текста */
+}
+#cookingResultsList {
+    /* 1. Махаме долния скрол напълно */
+    overflow-x: hidden !important;
+    overflow-y: auto; /* Вертикален скрол само ако трябва */
+
+    /* 2. ВАЖНО: Този padding оправя "изрязванетo" на картите при hover.
+       Дава им място да се повдигнат, без да удрят ръба. */
+    padding: 20px !important; 
+    
+    /* 3. Малко разстояние отстрани, за да не се лепи скрола за ръба */
+    margin-right: 2px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* --- СТИЛ НА СКРОЛБАРА (Тънък и дискретен) --- */
+
+/* Самата лента - правим я тънка */
+#cookingResultsList::-webkit-scrollbar {
+    width: 5px; 
+}
+
+/* Фонът на скрола - прозрачен и с отстъп отгоре (да не закрива X-чето) */
+#cookingResultsList::-webkit-scrollbar-track {
+    background: transparent;
+    margin-top: 40px; /* 🔥 Това сваля скрола надолу, далече от "X" бутона */
+    margin-bottom: 10px;
+}
+
+/* "Палецът" на скрола - почти невидим, докато не го посочиш */
+#cookingResultsList::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.05); /* Много бледо сиво */
+    border-radius: 10px;
+}
+
+/* Когато посочиш самия списък или скрола, става леко видим */
+#cookingResultsList:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* По-видимо сиво при активност */
+}
+
+/* --- СТИЛ ЗА СТЪПКИТЕ В РЕЦЕПТАТА --- */
+.cooking-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start; /* Подравнява номера с началото на текста */
+    gap: 15px;
+}
+
+.step-num {
+    background: var(--primary); /* Оранжев/Червен цвят */
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%; /* Кръгче */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0; /* Да не се мачка кръгчето */
+    margin-top: -2px;
+}
+
+.step-item p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #444; /* Тъмен текст */
+}
+
+/* За Dark Mode */
+body.dark-mode .step-item p {
+    color: #ddd;
+}
