@@ -197,43 +197,48 @@ body.dark-mode .recipe-card p { color: #ccc; }
     background-color: rgba(0, 0, 0, 0.2); /* По-видимо сиво при активност */
 }
 
-/* --- СТИЛ ЗА СТЪПКИТЕ В РЕЦЕПТАТА --- */
+/* Контейнер за стъпките */
 .cooking-steps {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
+/* Единичен ред със стъпка */
 .step-item {
     display: flex;
-    align-items: flex-start; /* Подравнява номера с началото на текста */
+    align-items: flex-start;
     gap: 15px;
 }
 
+/* Оранжевото кръгче с номера */
 .step-num {
-    background: var(--primary); /* Оранжев/Червен цвят */
-    color: white;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%; /* Кръгче */
+    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%); /* Градиентът от фона */
+    color: #2d1e1e; /* Тъмен текст, за да се чете ясно */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 14px;
-    flex-shrink: 0; /* Да не се мачка кръгчето */
-    margin-top: -2px;
+    font-size: 15px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Лека сянка за дълбочина */
+    border: 1px solid rgba(255,255,255,0.4); /* Тънък бял контур за красота */
 }
 
+/* Текстът на стъпка */
 .step-item p {
     margin: 0;
     font-size: 15px;
     line-height: 1.5;
-    color: #444; /* Тъмен текст */
+    color: #333;
+    padding-top: 4px; /* Леко подравняване с номера */
 }
 
-/* За Dark Mode */
+/* Тъмна тема */
 body.dark-mode .step-item p {
-    color: #ddd;
+    color: #eee;
 }

@@ -17,7 +17,6 @@ export class UIView {
             cookingModal: document.getElementById("cookingModal"), 
             cookingResultsList: document.getElementById("cookingResultsList"), 
             closeCookingBtn: document.querySelector(".close-cooking"),
-            cookingModal : document.getElementById("cookingModal"),
             bars: {
                 prot: { bar: document.getElementById("proteinBar"), val: document.getElementById("proteinVal") },
                 fat: { bar: document.getElementById("fatBar"), val: document.getElementById("fatVal") }
@@ -64,7 +63,6 @@ export class UIView {
         if (this.elements.adminFab) {
             this.elements.adminFab.style.display = (user && isAdmin) ? "flex" : "none";
         }
-        // Ако сме в профила, обновяваме имейла
         const emailEl = document.getElementById("userEmail");
         if (emailEl && user) emailEl.textContent = user.email;
     }
@@ -80,7 +78,7 @@ export class UIView {
         }
     }
 
-    // --- РЕНДИРАНЕ НА ПРОДУКТИ (Index) ---
+    // --- РЕНДИРАНЕ НА ПРОДУКТИ ---
     renderProducts(list, addToCartCallback) {
         if (!this.elements.productList) return;
         this.elements.productList.innerHTML = "";
@@ -153,14 +151,13 @@ export class UIView {
         const pct = Math.min((val / limit) * 100, 100);
         el.bar.style.width = pct + "%";
         el.val.textContent = `${val.toFixed(1)}g`;
-        // Цветове
-        if(val > limit) el.bar.style.background = "#ff4757"; // Червено ако прекали
-        else el.bar.style.background = "#2ed573"; // Зелено
+        if(val > limit) el.bar.style.background = "#ff4757";
+        else el.bar.style.background = "#2ed573";
     }
 
-    // --- РЕНДИРАНЕ НА РЕЦЕПТИ (Recipes Page) ---
+    // --- РЕНДИРАНЕ НА РЕЦЕПТИ ---
     renderRecipesGrid(recipes, userFavs, toggleFavCallback) {
-        const grid = this.elements.recipeGrid || this.elements.favGrid; // Работи и за двете страници
+        const grid = this.elements.recipeGrid || this.elements.favGrid;
         if (!grid) return;
         
         grid.innerHTML = "";
@@ -215,31 +212,28 @@ export class UIView {
             `;
         }
     }
-    toggleCookingModal(show) {
-    if (this.elements.cookingModal) {
-        this.elements.cookingModal.style.display = show ? "flex" : "none";
-    }
-}
 
-renderCookingResults(data) {
+    toggleCookingModal(show) {
+        if (this.elements.cookingModal) {
+            this.elements.cookingModal.style.display = show ? "flex" : "none";
+        }
+    }
+
+    renderCookingResults(data) {
         const listContainer = this.elements.cookingResultsList;
         const modalContent = document.querySelector("#cookingModal .modal-content");
         
-        // Добавяме класа за стъклен ефект
         if (modalContent) modalContent.classList.add("glass-modal");
         if (!listContainer) return;
 
-        // --- 1. ФУНКЦИЯ ЗА РИСУВАНЕ НА СПИСЪКА (LIST VIEW) ---
+        // 1. СПИСЪК
         const renderList = () => {
-            listContainer.innerHTML = ""; // Чистим всичко
-            
-            // Заглавие на модала
+            listContainer.innerHTML = "";
             const title = document.createElement("h2");
             title.style.textAlign = "center";
             title.innerHTML = "👨‍🍳 Избери рецепта";
             listContainer.appendChild(title);
 
-            // А) Точни попадения
             if (data.exact.length > 0) {
                 const h3 = document.createElement("h3");
                 h3.className = "section-exact";
@@ -256,13 +250,11 @@ renderCookingResults(data) {
                         </div>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     `;
-                    // Клик -> Отиваме в детайли
                     card.onclick = () => renderDetails(item, "exact");
                     listContainer.appendChild(card);
                 });
             }
 
-            // Б) Частични попадения
             if (data.partial.length > 0) {
                 const h3 = document.createElement("h3");
                 h3.className = "section-partial";
@@ -281,13 +273,11 @@ renderCookingResults(data) {
                         </div>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     `;
-                    // Клик -> Отиваме в детайли
                     card.onclick = () => renderDetails(item, "partial");
                     listContainer.appendChild(card);
                 });
             }
 
-            // В) Няма резултати
             if (data.exact.length === 0 && data.partial.length === 0) {
                 listContainer.innerHTML = `
                     <div style='text-align:center; padding:40px; color:#888;'>
@@ -298,7 +288,7 @@ renderCookingResults(data) {
             }
         };
 
-        // --- 2. ФУНКЦИЯ ЗА РИСУВАНЕ НА ДЕТАЙЛИ (DETAIL VIEW) ---
+       // --- 2. ФУНКЦИЯ ЗА РИСУВАНЕ НА ДЕТАЙЛИ (DETAIL VIEW) ---
         const renderDetails = (item, type) => {
             listContainer.innerHTML = ""; // Чистим списъка
             const r = item.recipe;
@@ -307,25 +297,46 @@ renderCookingResults(data) {
             const backBtn = document.createElement("button");
             backBtn.className = "back-btn";
             backBtn.innerHTML = `<i class="fas fa-arrow-left"></i> Назад към списъка`;
-            backBtn.onclick = () => renderList(); // Връща ни към списъка
+            backBtn.onclick = () => renderList();
             listContainer.appendChild(backBtn);
 
-            // Основна карта (вече разгъната)
+            // Основна карта
             const detailCard = document.createElement("div");
-            detailCard.className = "recipe-result-card"; // Ползваме същия "Guzarski" стил
+            detailCard.className = "recipe-result-card";
             detailCard.style.animation = "popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
 
-            // Подготвяме баджовете за продуктите
-            const usedHtml = item.used.map(p => 
-                `<span class="recipe-used">✅ ${p.name}</span>`
-            ).join("");
+            // Продукти (баджове)
+            const usedHtml = item.used.map(p => `<span class="recipe-used">✅ ${p.name}</span>`).join("");
             
             let missingHtml = "";
             if (type === "partial") {
-                missingHtml = item.missing.map(p => 
-                    `<span class="recipe-missing">❌ ${p.name}</span>`
-                ).join("");
+                missingHtml = item.missing.map(p => `<span class="recipe-missing">❌ ${p.name}</span>`).join("");
             }
+
+            // --- ЛОГИКА ЗА СТЪПКИТЕ (ВЕЧЕ РАБОТИ С МАСИВИ) ---
+            let stepsArray = [];
+
+            if (Array.isArray(r.steps)) {
+                // ВАРИАНТ 1: Ако в базата е масив (['Стъпка 1', 'Стъпка 2'])
+                stepsArray = r.steps;
+            } else if (typeof r.steps === 'string') {
+                // ВАРИАНТ 2: Ако е текст (стара рецепта), го разделяме
+                stepsArray = r.steps.split(/[\n\.]+/).filter(s => s.trim().length > 2);
+            } else if (r.description) {
+                // ВАРИАНТ 3: Ако няма steps, ползваме описанието
+                stepsArray = r.description.split(/[\n\.]+/).filter(s => s.trim().length > 2);
+            } else {
+                stepsArray = ["Няма въведени стъпки."];
+            }
+
+            // Генерираме HTML за стъпките
+            let stepsHTML = stepsArray.map((step, index) => `
+                <div class="step-item">
+                    <span class="step-num">${index + 1}</span>
+                    <p>${step.trim()}</p>
+                </div>
+            `).join('');
+            // ---------------------------------------------------
 
             detailCard.innerHTML = `
                 <h2 style="margin-top:0; border:none; text-align:left;">${r.title}</h2>
@@ -342,13 +353,14 @@ renderCookingResults(data) {
                 <hr style="border-color:rgba(255,255,255,0.1); margin:15px 0;">
                 
                 <p class="recipe-steps-title">🔪 Начин на приготвяне:</p>
-                <p class="recipe-steps-text" style="white-space: pre-line;">${r.steps || "Няма въведени стъпки."}</p>
+                <div class="cooking-steps">
+                    ${stepsHTML}
+                </div>
             `;
 
             listContainer.appendChild(detailCard);
         };
 
-        // Стартираме със списъка
         renderList();
     }
 }
