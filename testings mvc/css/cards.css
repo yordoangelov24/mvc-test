@@ -72,6 +72,7 @@
     background: rgba(255, 255, 255, 0.65);
     border-radius: 20px;
     padding: 20px;
+
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -203,19 +204,19 @@ body.dark-mode .recipe-card p { color: #ccc; }
     flex-direction: column;
     gap: 15px;
     margin-top: 15px;
+    padding: 0 15px; /* 🔥 ТОВА добавя въздух отляво и отдясно */
 }
 
-/* Единичен ред със стъпка */
 .step-item {
     display: flex;
     align-items: flex-start;
     gap: 15px;
 }
 
-/* Оранжевото кръгче с номера */
+/* Оправените оранжеви кръгчета (вече не са розови) */
 .step-num {
-    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%); /* Градиентът от фона */
-    color: #2d1e1e; /* Тъмен текст, за да се чете ясно */
+    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%); /* Оранжев градиент */
+    color: #2d1e1e;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -225,20 +226,24 @@ body.dark-mode .recipe-card p { color: #ccc; }
     font-weight: 800;
     font-size: 15px;
     flex-shrink: 0;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Лека сянка за дълбочина */
-    border: 1px solid rgba(255,255,255,0.4); /* Тънък бял контур за красота */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
 }
 
-/* Текстът на стъпка */
 .step-item p {
     margin: 0;
     font-size: 15px;
     line-height: 1.5;
-    color: #333;
-    padding-top: 4px; /* Леко подравняване с номера */
+    color: #444;
+    padding-top: 3px; /* Леко центриране спрямо кръгчето */
 }
 
 /* Тъмна тема */
 body.dark-mode .step-item p {
-    color: #eee;
+    color: #ddd;
+}
+/* --- СТИЛ ЗА ЦЯЛАТА КАРТА С РЕЗУЛТАТА --- */
+.recipe-result-card {
+    padding: 20px 15px; /* Това отмества заглавието, продуктите и всичко навътре */
+
 }
