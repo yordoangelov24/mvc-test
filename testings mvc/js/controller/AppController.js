@@ -21,7 +21,7 @@ export class AppController {
         this.authModel.monitorAuthState((user, isAdmin) => {
             this.view.updateAuthUI(user, isAdmin);
             
-            // 🔥 ВАЖНО: Тук показваме/скриваме Админ бутона (Fab)
+            // ВАЖНО: Тук показваме/скриваме Админ бутона (Fab)
             const adminBtn = document.getElementById("adminFab");
             if (adminBtn) {
                 if (isAdmin) adminBtn.classList.add("visible");
@@ -82,7 +82,7 @@ export class AppController {
             searchInput.addEventListener("input", () => this.filterProducts());
         }
 
-        // 🔥 КАТЕГОРИИ (Работи и за Desktop чиповете, и за Mobile чиповете)
+        // КАТЕГОРИИ (Работи и за Desktop чиповете, и за Mobile чиповете)
         // Хващаме всички бутони, които имат data-category атрибут
         const allCategoryBtns = document.querySelectorAll(".chip, .mobile-chip");
         
@@ -139,7 +139,7 @@ export class AppController {
 
     // --- ОБЩИ UI НАСТРОЙКИ ---
     setupUIListeners() {
-        // 🔥 МОБИЛНА КОЛИЧКА (Отваряне/Затваряне на десния панел)
+        //  МОБИЛНА КОЛИЧКА (Отваряне/Затваряне на десния панел)
         const mobileToggle = document.getElementById("mobileCartToggle");
         const rightPanel = document.querySelector(".right-panel");
         

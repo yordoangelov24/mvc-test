@@ -56,13 +56,13 @@ export class DataModel {
             // 1. Какво липсва?
             const missingIds = recipe.ingredients.filter(id => !cartIds.includes(id));
             
-            // 2. Какво ИМАМЕ?
+            // 2. Какво имаме?
             const usedIds = recipe.ingredients.filter(id => cartIds.includes(id));
 
             // АКО рецептата не ползва нито един продукт от количката -> ПРОПУСКАМЕ Я
             if (usedIds.length === 0) return;
 
-            // 🔥 ВАЖНО: Намираме целите обекти на продуктите, за да им вземем имената
+            // ВАЖНО: Намираме целите обекти на продуктите, за да им вземем имената
             const usedProducts = this.products.filter(p => usedIds.includes(p.id));
 
             if (missingIds.length === 0) {
