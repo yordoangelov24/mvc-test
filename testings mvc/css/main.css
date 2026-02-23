@@ -49,7 +49,7 @@ body {
     padding: 30px 20px; 
     z-index: 2; 
     overflow-y: auto; 
-    overflow-x: hidden; /* 🔥 ГАРАНТИРАНО БЕЗ ДОЛЕН СКРОЛ */
+    overflow-x: hidden; /*  ГАРАНТИРАНО БЕЗ ДОЛЕН СКРОЛ */
 }
 
 /* Скриваме грозния вертикален скролбар, но скрола работи */
@@ -101,14 +101,14 @@ body {
     color: white; border: none; border-radius: 16px;
     font-family: 'Montserrat', sans-serif; font-weight: 700; text-transform: uppercase;
     cursor: pointer;
-    white-space: nowrap; /* 🔥 Да не се сгъва текста */
+    white-space: nowrap; /*  Да не се сгъва текста */
     display: flex; justify-content: center; align-items: center; gap: 10px;
 }
 
 /* Theme Switch */
 .theme-switch-wrapper { 
     display: flex; align-items: center; margin-bottom: 20px; gap: 10px; flex-shrink: 0; 
-    width: 100%; /* 🔥 Пълна ширина, за да не се сгъва */
+    width: 100%; /*  Пълна ширина, за да не се сгъва */
 }
 .theme-switch { display: inline-block; height: 30px; position: relative; width: 60px; flex-shrink: 0;}
 .theme-switch input { display: none; }
@@ -230,7 +230,7 @@ body.dark-mode .mobile-chip.active { background: var(--primary); color: white; }
    📱 RESPONSIVE & MOBILE RULES 
    =================================================== */
 
-/* 1. LAPTOP (1024px - 1400px) - 🔥 ОПРАВЕНО: ШИРОКО МЕНЮ, ЕДНО ПОД ДРУГО */
+/* 1. LAPTOP (1024px - 1400px) -  ОПРАВЕНО: ШИРОКО МЕНЮ, ЕДНО ПОД ДРУГО */
 @media (max-width: 1400px) {
     .app-layout { 
         /* Правим лявата лента 260px (колкото на десктоп), за да има място */
@@ -269,7 +269,7 @@ body.dark-mode .mobile-chip.active { background: var(--primary); color: white; }
         width: 100%;
     }
     
-    /* 🔥 ОПРАВЯМЕ СГЪНАТИТЕ БУТОНИ */
+    /*  ОПРАВЯМЕ СГЪНАТИТЕ БУТОНИ */
     .theme-switch-wrapper {
         width: 100%;
         margin-bottom: 20px;
