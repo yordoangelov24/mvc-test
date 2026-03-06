@@ -12,7 +12,7 @@ export class AppController {
     }
 
     async init() {
-        console.log("🚀 App Started (MVC)");
+        console.log(" App Started (MVC)");
 
         // 1. Настройка на Auth слушателите (Login/Register)
         this.setupAuthListeners();
@@ -21,14 +21,12 @@ export class AppController {
         this.authModel.monitorAuthState((user, isAdmin) => {
             this.view.updateAuthUI(user, isAdmin);
             
-            // ВАЖНО: Тук показваме/скриваме Админ бутона (Fab)
             const adminBtn = document.getElementById("adminFab");
             if (adminBtn) {
                 if (isAdmin) adminBtn.classList.add("visible");
                 else adminBtn.classList.remove("visible");
             }
 
-            // Презареждаме данните според потребителя
             this.refreshPageData(user); 
         });
 
@@ -41,22 +39,18 @@ export class AppController {
         // 5. Логика за страниците (Търсачка, Категории)
         this.setupRoutingLogic(); 
         
-        // Първоначално зареждане
         this.refreshPageData(this.authModel.currentUser);
     }
 
     refreshPageData(user) {
-        // Ако сме на index.html (Хладилника)
         if (document.getElementById("productList")) {
             this.filterProducts();
         }
-        // Ако сме на recipes.html (Рецептите)
         if (document.getElementById("recipeGrid")) {
             this.loadRecipesPage(user, false);
         }
     }
 
-    // --- ЛОГИКА ЗА РЕЦЕПТИТЕ ---
     async loadRecipesPage(user, onlyFavorites) {
         let recipes = this.dataModel.recipes;
         let userFavs = [];
@@ -74,37 +68,27 @@ export class AppController {
         });
     }
 
-    // --- ЛОГИКА ЗА ХЛАДИЛНИКА И НАВИГАЦИЯТА ---
     setupRoutingLogic() {
-        // Търсачка
         const searchInput = document.getElementById("searchInput");
         if (searchInput) {
             searchInput.addEventListener("input", () => this.filterProducts());
         }
 
-        // КАТЕГОРИИ (Работи и за Desktop чиповете, и за Mobile чиповете)
-        // Хващаме всички бутони, които имат data-category атрибут
         const allCategoryBtns = document.querySelectorAll(".chip, .mobile-chip");
         
         allCategoryBtns.forEach(btn => {
             btn.addEventListener("click", (e) => {
-                // 1. Махаме активния клас от всички бутони
                 allCategoryBtns.forEach(c => c.classList.remove("active"));
-                
-                // 2. Взимаме избраната категория
                 const cat = e.target.dataset.category;
                 
-                // 3. Маркираме активни всички бутони с тази категория (за да светнат и горе, и долу)
                 const siblings = document.querySelectorAll(`[data-category="${cat}"]`);
                 siblings.forEach(s => s.classList.add("active"));
 
-                // 4. Филтрираме
                 this.currentCategory = cat;
                 this.filterProducts();
             });
         });
 
-        // Филтър "Любими" (само в recipes.html)
         const btnFavFilter = document.getElementById("btnFavFilter");
         if (btnFavFilter) {
             btnFavFilter.addEventListener("click", () => {
@@ -114,7 +98,6 @@ export class AppController {
             });
         }
 
-        // Изчистване на количката
         const clearBtn = document.getElementById("clearBtn");
         if (clearBtn) clearBtn.onclick = () => {
             this.dataModel.clearCart();
@@ -122,24 +105,19 @@ export class AppController {
             this.view.showToast("Кошницата е изчистена", "info");
         };
 
-        // Бутон "ГОТВИ"
         const genBtn = document.getElementById("generateBtn");
         if (genBtn) genBtn.onclick = () => this.handleGenerateRecipe();
 
-        // Затваряне на модала за готвене
         const closeCook = document.querySelector(".close-cooking");
         const cookModal = document.getElementById("cookingModal");
         if (closeCook) closeCook.onclick = () => this.view.toggleCookingModal(false);
         
-        // Затваряне при клик извън прозореца
         window.onclick = (e) => {
             if (e.target === cookModal) this.view.toggleCookingModal(false);
         };
     }
 
-    // --- ОБЩИ UI НАСТРОЙКИ ---
     setupUIListeners() {
-        //  МОБИЛНА КОЛИЧКА (Отваряне/Затваряне на десния панел)
         const mobileToggle = document.getElementById("mobileCartToggle");
         const rightPanel = document.querySelector(".right-panel");
         
@@ -148,7 +126,6 @@ export class AppController {
                 rightPanel.classList.toggle("active");
             });
             
-            // Затваряне при клик извън панела (за удобство)
             document.addEventListener("click", (e) => {
                 if (window.innerWidth < 950 && 
                     !rightPanel.contains(e.target) && 
@@ -159,7 +136,6 @@ export class AppController {
             });
         }
 
-        // Админ Модал (Отваряне/Затваряне)
         const adminBtn = document.getElementById("adminFab");
         const adminModal = document.getElementById("adminModal");
         const closeAdmin = document.querySelector(".close-admin");
@@ -171,7 +147,6 @@ export class AppController {
             if (adminModal) adminModal.style.display = "none";
         };
 
-        // Dark Mode логика (ако имаш такава във View или тук)
         const themeSwitch = document.querySelector('.theme-switch input');
         if(themeSwitch) {
             themeSwitch.addEventListener('change', (e) => {
@@ -183,7 +158,6 @@ export class AppController {
                     localStorage.setItem('theme', 'light-mode');
                 }
             });
-            // Проверка при зареждане
             if(localStorage.getItem('theme') === 'dark-mode') {
                 document.body.classList.add('dark-mode');
                 themeSwitch.checked = true;
@@ -191,7 +165,6 @@ export class AppController {
         }
     }
 
-    // --- ФИЛТРИРАНЕ НА ПРОДУКТИ (ХЛАДИЛНИК) ---
     filterProducts() {
         if (!document.getElementById("productList")) return; 
         
@@ -204,11 +177,9 @@ export class AppController {
         });
         
         this.view.renderProducts(filtered, (product) => {
-            // Callback при клик върху продукт (Добавяне в количката)
             const res = this.dataModel.addToCart(product);
             
             this.view.updateCartUI(this.dataModel.cart, (id) => {
-                // Callback при клик върху бутон в количката (Махане/Намаляване)
                 this.dataModel.removeFromCart(id);
                 this.view.updateCartUI(this.dataModel.cart, null);
             });
@@ -217,7 +188,6 @@ export class AppController {
         });
     }
 
-    // --- ГЕНЕРИРАНЕ НА РЕЦЕПТА ---
     handleGenerateRecipe() {
         const result = this.dataModel.findAllMatchingRecipes();
         
@@ -229,13 +199,15 @@ export class AppController {
             this.view.showToast("Няма подходящи рецепти.", "info");
         }
         
-        this.UIView.renderCookingResults(result, // (или data, зависи как ти се казва променливата там)
-            this.dataModel.userFavs || [], // Подаваме масива с любимите рецепти
-            (title, btn) => this.toggleFavorite(title, btn)) // Подаваме същата функция, която ползваш в главната страница);
-        this.UIView.toggleCookingModal(true);
+        // ОПРАВЕНО: this.view вместо this.UIView
+        this.view.renderCookingResults(
+            result, 
+            this.dataModel.userFavs || [], 
+            (title, btn) => this.handleFavToggle(title, btn) 
+        );
+        this.view.toggleCookingModal(true);
     }
 
-    // --- ЛЮБИМИ (TOGGLE) ---
     async handleFavToggle(title, btnElement) {
         if (!this.authModel.currentUser) {
             this.view.showToast("Влезте в профила си!", "info");
@@ -251,7 +223,6 @@ export class AppController {
         } catch(e) { console.error(e); }
     }
 
-    // --- AUTH LISTENER & ADMIN LOGIC ---
     setupAuthListeners() {
         const btn = document.getElementById("authBtn");
         if(btn) btn.onclick = () => {
@@ -294,7 +265,6 @@ export class AppController {
         this.setupAdminLogic();
     }
 
-    // --- ДОБАВЯНЕ НА ПРОДУКТ (ADMIN) ---
     setupAdminLogic() {
         const addBtn = document.getElementById("addProductBtn");
         if (addBtn) {
@@ -312,7 +282,6 @@ export class AppController {
                     });
                     this.view.showToast("Успешно добавено!", "success");
                     document.getElementById("adminModal").style.display = "none";
-                    // Рефреш след малко, за да се види новия продукт
                     setTimeout(() => window.location.reload(), 1000);
                 } catch(e) { this.view.showToast("Грешка", "error"); }
             });
@@ -336,7 +305,6 @@ export class AppController {
             };
         }
         
-        // Око за паролата
         function setupEye(toggleId, inputId) {
             const eyeBtn = document.getElementById(toggleId);
             const input = document.getElementById(inputId);

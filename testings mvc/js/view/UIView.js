@@ -24,7 +24,6 @@ export class UIView {
         };
     }
 
-    // --- TOAST ИЗВЕСТИЯ ---
     showToast(message, type = 'success') {
         if (!this.elements.toastContainer) {
             const c = document.createElement('div');
@@ -43,7 +42,6 @@ export class UIView {
         }, 3000);
     }
 
-    // --- МОДАЛИ ---
     toggleAuthModal(show) { if (this.elements.authModal) this.elements.authModal.style.display = show ? "flex" : "none"; }
     toggleAdminModal(show) { if (this.elements.adminModal) this.elements.adminModal.style.display = show ? "flex" : "none"; }
 
@@ -55,7 +53,6 @@ export class UIView {
         }
     }
 
-    // --- БУТОНИ И UI СТАТУС ---
     updateAuthUI(user, isAdmin) {
         if (this.elements.authBtnSide) {
             this.elements.authBtnSide.innerHTML = user ? `🚪 Изход` : `🔑 Вход`;
@@ -78,7 +75,6 @@ export class UIView {
         }
     }
 
-    // --- РЕНДИРАНЕ НА ПРОДУКТИ ---
     renderProducts(list, addToCartCallback) {
         if (!this.elements.productList) return;
         this.elements.productList.innerHTML = "";
@@ -105,7 +101,6 @@ export class UIView {
         });
     }
 
-    // --- КОШНИЦА UI ---
     updateCartUI(cart, removeCallback) {
         if (!this.elements.itemsContainer) return;
         
@@ -155,7 +150,6 @@ export class UIView {
         else el.bar.style.background = "#2ed573";
     }
 
-    // --- РЕНДИРАНЕ НА РЕЦЕПТИ ---
     renderRecipesGrid(recipes, userFavs, toggleFavCallback) {
         const grid = this.elements.recipeGrid || this.elements.favGrid;
         if (!grid) return;
@@ -185,7 +179,6 @@ export class UIView {
         });
     }
 
-    // --- ПОКАЗВАНЕ НА ГОТОВА РЕЦЕПТА ---
     showRecipeResult(recipe, cart, isExact) {
         if (!this.elements.recipeBox) return;
         
@@ -217,190 +210,94 @@ export class UIView {
         if (this.elements.cookingModal) {
             this.elements.cookingModal.style.display = show ? "flex" : "none";
         }
+    } // <-- ОПРАВЕНА СКОБА ТУК
 
-        renderCookingResults(data, userFavs = [], toggleFavCallback = null) 
-        {
-            const listContainer = this.elements.cookingResultsList;
-            const modalContent = document.querySelector("#cookingModal .modal-content");
-            
-            if (modalContent) modalContent.classList.add("glass-modal");
-            if (!listContainer) return;
-    
-            // --- 1. ФУНКЦИЯ ЗА РИСУВАНЕ НА СПИСЪКА ---
-            const renderList = () => {
-                listContainer.innerHTML = "";
-                const title = document.createElement("h2");
-                title.style.textAlign = "center";
-                title.innerHTML = "👨‍🍳 Избери рецепта";
-                listContainer.appendChild(title);
-    
-                if (data.exact.length > 0) {
-                    const h3 = document.createElement("h3");
-                    h3.className = "section-exact";
-                    h3.textContent = `✨ Имаш всичко (${data.exact.length})`;
-                    listContainer.appendChild(h3);
-    
-                    data.exact.forEach(item => {
-                        const isFav = userFavs.includes(item.recipe.title); // Проверяваме дали е любима
-                        const card = document.createElement("div");
-                        card.className = "recipe-preview-card";
-                        card.innerHTML = `
-                            <div class="preview-info">
-                                <h3>${item.recipe.title} ${isFav ? '<span style="font-size:14px; margin-left:5px;">❤️</span>' : ''}</h3>
-                                <span class="preview-status status-exact">Готово за готвене!</span>
-                            </div>
-                            <i class="fas fa-chevron-right arrow-icon"></i>
-                        `;
-                        card.onclick = () => renderDetails(item, "exact");
-                        listContainer.appendChild(card);
-                    });
-                }
-    
-                if (data.partial.length > 0) {
-                    const h3 = document.createElement("h3");
-                    h3.className = "section-partial";
-                    h3.style.marginTop = "20px";
-                    h3.textContent = `🛒 Липсва малко (${data.partial.length})`;
-                    listContainer.appendChild(h3);
-    
-                    data.partial.forEach(item => {
-                        const isFav = userFavs.includes(item.recipe.title);
-                        const missingCount = item.missing.length;
-                        const card = document.createElement("div");
-                        card.className = "recipe-preview-card";
-                        card.innerHTML = `
-                            <div class="preview-info">
-                                <h3>${item.recipe.title} ${isFav ? '<span style="font-size:14px; margin-left:5px;">❤️</span>' : ''}</h3>
-                                <span class="preview-status status-partial">Липсват ${missingCount} продукта</span>
-                            </div>
-                            <i class="fas fa-chevron-right arrow-icon"></i>
-                        `;
-                        card.onclick = () => renderDetails(item, "partial");
-                        listContainer.appendChild(card);
-                    });
-                }
-    
-                if (data.exact.length === 0 && data.partial.length === 0) {
-                    listContainer.innerHTML = `
-                        <div style='text-align:center; padding:40px; color:#888;'>
-                            <div style="font-size:40px; margin-bottom:10px;">🤷‍♂️</div>
-                            Не намерихме рецепти с тези продукти...<br>
-                            Опитай да добавиш основни неща като яйца, мляко или брашно.
-                        </div>`;
-                }
-            };
-    
-            // --- 2. ФУНКЦИЯ ЗА РИСУВАНЕ НА ДЕТАЙЛИ ---
-            const renderDetails = (item, type) => {
-                listContainer.innerHTML = ""; 
-                const r = item.recipe;
-                
-                const isFav = userFavs.includes(r.title); // Проверка дали е любима
-    
-                const backBtn = document.createElement("button");
-                backBtn.className = "back-btn";
-                backBtn.innerHTML = `<i class="fas fa-arrow-left"></i> Назад към списъка`;
-                backBtn.onclick = () => renderList(); 
-                listContainer.appendChild(backBtn);
-    
-                const detailCard = document.createElement("div");
-                detailCard.className = "recipe-result-card";
-                detailCard.style.animation = "popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-    
-                const usedHtml = item.used.map(p => `<span class="recipe-used">✅ ${p.name}</span>`).join("");
-                
-                let missingHtml = "";
-                if (type === "partial") {
-                    missingHtml = item.missing.map(p => `<span class="recipe-missing">❌ ${p.name}</span>`).join("");
-                }
-    
-                let stepsArray = [];
-                if (Array.isArray(r.steps)) {
-                    stepsArray = r.steps;
-                } else if (typeof r.steps === 'string') {
-                    stepsArray = r.steps.split(/[\n\.]+/).filter(s => s.trim().length > 2);
-                } else if (r.description) {
-                    stepsArray = r.description.split(/[\n\.]+/).filter(s => s.trim().length > 2);
-                } else {
-                    stepsArray = ["Няма въведени стъпки."];
-                }
-    
-                let stepsHTML = stepsArray.map((step, index) => `
-                    <div class="step-item">
-                        <span class="step-num">${index + 1}</span>
-                        <p>${step.trim()}</p>
-                    </div>
-                `).join('');
-    
-                // 🔥 ТУК ДОБАВЯМЕ СЪРЦЕТО ДО ЗАГЛАВИЕТО
-                detailCard.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                        <h2 style="margin:0; border:none; text-align:left; padding-right: 15px;">${r.title}</h2>
-                        
-                        ${toggleFavCallback ? `
-                            <button class="fav-btn ${isFav ? 'is-favorite' : ''}" 
-                                    style="position: static; margin: 0; flex-shrink: 0; background: none; border: none; font-size: 26px; cursor: pointer; filter: ${isFav ? 'none' : 'grayscale(100%) opacity(40%)'}; transition: 0.2s; box-shadow: none;">
-                                ❤️
-                            </button>
-                        ` : ''}
-                    </div>
-                    
-                    <p class="recipe-desc" style="font-style:italic; opacity:0.8;">${r.description}</p>
-                    
-                    <hr style="border-color:rgba(255,255,255,0.1); margin:15px 0;">
-                    
-                    <p style="font-size:12px; text-transform:uppercase; color:#94a3b8; font-weight:bold;">🛒 Продукти:</p>
-                    <div class="ingredients-list">
-                        ${usedHtml}
-                        ${missingHtml}
-                    </div>
-    
-                    <hr style="border-color:rgba(255,255,255,0.1); margin:15px 0;">
-                    
-                    <p class="recipe-steps-title">🔪 Начин на приготвяне:</p>
-                    <div class="cooking-steps">
-                        ${stepsHTML}
-                    </div>
-                `;
-                
-                // Закачаме събитието за клик на сърцето (ако има такова)
-                if (toggleFavCallback) {
-                    const favBtn = detailCard.querySelector(".fav-btn");
-                    if (favBtn) {
-                        favBtn.onclick = (e) => {
-                            // Викаме логиката от контролера (запис в базата данни)
-                            toggleFavCallback(r.title, e.target);
-                            
-                            // Сменяме визуализацията веднага, за да не чакаме презареждане
-                            const isNowFav = e.target.classList.toggle("is-favorite");
-                            e.target.style.filter = isNowFav ? 'none' : 'grayscale(100%) opacity(40%)';
-                        };
-                    }
-                }
-    
-                listContainer.appendChild(detailCard);
-            };
-    
-            renderList();
-        }
-       // --- 2. ФУНКЦИЯ ЗА РИСУВАНЕ НА ДЕТАЙЛИ (DETAIL VIEW) ---
+    renderCookingResults(data, userFavs = [], toggleFavCallback = null) {
+        const listContainer = this.elements.cookingResultsList;
+        const modalContent = document.querySelector("#cookingModal .modal-content");
+        
+        if (modalContent) modalContent.classList.add("glass-modal");
+        if (!listContainer) return;
+
+        const renderList = () => {
+            listContainer.innerHTML = "";
+            const title = document.createElement("h2");
+            title.style.textAlign = "center";
+            title.innerHTML = "👨‍🍳 Избери рецепта";
+            listContainer.appendChild(title);
+
+            if (data.exact.length > 0) {
+                const h3 = document.createElement("h3");
+                h3.className = "section-exact";
+                h3.textContent = `✨ Имаш всичко (${data.exact.length})`;
+                listContainer.appendChild(h3);
+
+                data.exact.forEach(item => {
+                    const isFav = userFavs.includes(item.recipe.title);
+                    const card = document.createElement("div");
+                    card.className = "recipe-preview-card";
+                    card.innerHTML = `
+                        <div class="preview-info">
+                            <h3>${item.recipe.title} ${isFav ? '<span style="font-size:14px; margin-left:5px;">❤️</span>' : ''}</h3>
+                            <span class="preview-status status-exact">Готово за готвене!</span>
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    `;
+                    card.onclick = () => renderDetails(item, "exact");
+                    listContainer.appendChild(card);
+                });
+            }
+
+            if (data.partial.length > 0) {
+                const h3 = document.createElement("h3");
+                h3.className = "section-partial";
+                h3.style.marginTop = "20px";
+                h3.textContent = `🛒 Липсва малко (${data.partial.length})`;
+                listContainer.appendChild(h3);
+
+                data.partial.forEach(item => {
+                    const isFav = userFavs.includes(item.recipe.title);
+                    const missingCount = item.missing.length;
+                    const card = document.createElement("div");
+                    card.className = "recipe-preview-card";
+                    card.innerHTML = `
+                        <div class="preview-info">
+                            <h3>${item.recipe.title} ${isFav ? '<span style="font-size:14px; margin-left:5px;">❤️</span>' : ''}</h3>
+                            <span class="preview-status status-partial">Липсват ${missingCount} продукта</span>
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    `;
+                    card.onclick = () => renderDetails(item, "partial");
+                    listContainer.appendChild(card);
+                });
+            }
+
+            if (data.exact.length === 0 && data.partial.length === 0) {
+                listContainer.innerHTML = `
+                    <div style='text-align:center; padding:40px; color:#888;'>
+                        <div style="font-size:40px; margin-bottom:10px;">🤷‍♂️</div>
+                        Не намерихме рецепти с тези продукти...<br>
+                        Опитай да добавиш основни неща като яйца, мляко или брашно.
+                    </div>`;
+            }
+        };
+
         const renderDetails = (item, type) => {
-            listContainer.innerHTML = ""; // Чистим списъка
+            listContainer.innerHTML = ""; 
             const r = item.recipe;
+            
+            const isFav = userFavs.includes(r.title); 
 
-            // Бутон НАЗАД
             const backBtn = document.createElement("button");
             backBtn.className = "back-btn";
             backBtn.innerHTML = `<i class="fas fa-arrow-left"></i> Назад към списъка`;
-            backBtn.onclick = () => renderList();
+            backBtn.onclick = () => renderList(); 
             listContainer.appendChild(backBtn);
 
-            // Основна карта
             const detailCard = document.createElement("div");
             detailCard.className = "recipe-result-card";
             detailCard.style.animation = "popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
 
-            // Продукти (баджове)
             const usedHtml = item.used.map(p => `<span class="recipe-used">✅ ${p.name}</span>`).join("");
             
             let missingHtml = "";
@@ -408,33 +305,36 @@ export class UIView {
                 missingHtml = item.missing.map(p => `<span class="recipe-missing">❌ ${p.name}</span>`).join("");
             }
 
-            // --- ЛОГИКА ЗА СТЪПКИТЕ (ВЕЧЕ РАБОТИ С МАСИВИ) ---
             let stepsArray = [];
-
             if (Array.isArray(r.steps)) {
-                // ВАРИАНТ 1: Ако в базата е масив (['Стъпка 1', 'Стъпка 2'])
                 stepsArray = r.steps;
             } else if (typeof r.steps === 'string') {
-                // ВАРИАНТ 2: Ако е текст (стара рецепта), го разделяме
                 stepsArray = r.steps.split(/[\n\.]+/).filter(s => s.trim().length > 2);
             } else if (r.description) {
-                // ВАРИАНТ 3: Ако няма steps, ползваме описанието
                 stepsArray = r.description.split(/[\n\.]+/).filter(s => s.trim().length > 2);
             } else {
                 stepsArray = ["Няма въведени стъпки."];
             }
 
-            // Генерираме HTML за стъпките
             let stepsHTML = stepsArray.map((step, index) => `
                 <div class="step-item">
                     <span class="step-num">${index + 1}</span>
                     <p>${step.trim()}</p>
                 </div>
             `).join('');
-            // ---------------------------------------------------
 
             detailCard.innerHTML = `
-                <h2 style="margin-top:0; border:none; text-align:left;">${r.title}</h2>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <h2 style="margin:0; border:none; text-align:left; padding-right: 15px;">${r.title}</h2>
+                    
+                    ${toggleFavCallback ? `
+                        <button class="fav-btn ${isFav ? 'is-favorite' : ''}" 
+                                style="position: static; margin: 0; flex-shrink: 0; background: none; border: none; font-size: 26px; cursor: pointer; filter: ${isFav ? 'none' : 'grayscale(100%) opacity(40%)'}; transition: 0.2s; box-shadow: none;">
+                            ❤️
+                        </button>
+                    ` : ''}
+                </div>
+                
                 <p class="recipe-desc" style="font-style:italic; opacity:0.8;">${r.description}</p>
                 
                 <hr style="border-color:rgba(255,255,255,0.1); margin:15px 0;">
@@ -452,6 +352,17 @@ export class UIView {
                     ${stepsHTML}
                 </div>
             `;
+            
+            if (toggleFavCallback) {
+                const favBtn = detailCard.querySelector(".fav-btn");
+                if (favBtn) {
+                    favBtn.onclick = (e) => {
+                        toggleFavCallback(r.title, e.target);
+                        const isNowFav = e.target.classList.toggle("is-favorite");
+                        e.target.style.filter = isNowFav ? 'none' : 'grayscale(100%) opacity(40%)';
+                    };
+                }
+            }
 
             listContainer.appendChild(detailCard);
         };
