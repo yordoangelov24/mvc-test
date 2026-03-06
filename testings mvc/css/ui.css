@@ -83,7 +83,7 @@
 .toast.info { border-color: #0984e3; }
 
 
-/* --- ☕ CAPPUCCINO / LIGHT BROWN MODAL --- */
+/* ---  CAPPUCCINO / LIGHT BROWN MODAL --- */
 
 /* 1. АНИМАЦИЯТА */
 @keyframes peachFlow {
@@ -108,7 +108,7 @@
     max-width: 800px !important;
     width: 95% !important;
     
-    /* 🔥 Основен шрифт за всичко в модала */
+    /*  Основен шрифт за всичко в модала */
     font-family: 'Nunito', sans-serif !important; 
 }
 

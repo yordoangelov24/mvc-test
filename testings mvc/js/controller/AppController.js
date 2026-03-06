@@ -229,8 +229,10 @@ export class AppController {
             this.view.showToast("Няма подходящи рецепти.", "info");
         }
         
-        this.view.renderCookingResults(result);
-        this.view.toggleCookingModal(true);
+        this.UIView.renderCookingResults(result, // (или data, зависи как ти се казва променливата там)
+            this.dataModel.userFavs || [], // Подаваме масива с любимите рецепти
+            (title, btn) => this.toggleFavorite(title, btn)) // Подаваме същата функция, която ползваш в главната страница);
+        this.UIView.toggleCookingModal(true);
     }
 
     // --- ЛЮБИМИ (TOGGLE) ---
