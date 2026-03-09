@@ -130,7 +130,7 @@ export class UIView {
         this.updateNutritionBars(cart);
     }
 
-    updateNutritionBars(cart) {
+   updateNutritionBars(cart) {
         if(!this.elements.bars.prot.bar) return;
         
         const total = cart.reduce((acc, i) => ({
@@ -138,16 +138,30 @@ export class UIView {
             f: acc.f + (i.fat || 0) * i.qty
         }), { p: 0, f: 0 });
 
-        this._setBar(this.elements.bars.prot, total.p, 100);
-        this._setBar(this.elements.bars.fat, total.f, 70);
+        // Подаваме 4-ти параметър: 'protein' или 'fat', за да знае как да оцветява
+        this._setBar(this.elements.bars.prot, total.p, 100, 'protein');
+        this._setBar(this.elements.bars.fat, total.f, 70, 'fat');
     }
 
-    _setBar(el, val, limit) {
+    _setBar(el, val, limit, type) {
+        // Изчисляваме процента (максимум до 100%)
         const pct = Math.min((val / limit) * 100, 100);
         el.bar.style.width = pct + "%";
         el.val.textContent = `${val.toFixed(1)}g`;
-        if(val > limit) el.bar.style.background = "#ff4757";
-        else el.bar.style.background = "#2ed573";
+        
+        let hue;
+        if (type === 'protein') {
+            // ПРОТЕИН: Колкото повече, толкова по-зелено!
+            // 0% = 0 (Червено) -> 100% = 120 (Зелено)
+            hue = (pct / 100) * 120;
+        } else {
+            // МАЗНИНИ: Колкото повече, толкова по-червено!
+            // 0% = 120 (Зелено) -> 100% = 0 (Червено)
+            hue = 120 - ((pct / 100) * 120);
+        }
+        
+        // Прилагаме плавно изчисления цвят (HSL)
+        el.bar.style.background = `hsl(${hue}, 85%, 55%)`;
     }
 
     renderRecipesGrid(recipes, userFavs, toggleFavCallback) {

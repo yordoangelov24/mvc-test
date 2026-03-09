@@ -233,32 +233,59 @@ export class AppController {
         const closeBtns = document.querySelectorAll(".close");
         closeBtns.forEach(b => b.onclick = () => this.view.toggleAuthModal(false));
 
+       // --- БУТОН ЗА ВХОД ---
         const loginBtn = document.getElementById("loginSubmitBtn");
         if(loginBtn) loginBtn.onclick = async () => {
+            // ПРОВЕРКА ЗА РОБОТ: Взимаме стойността от reCAPTCHA
+            const recaptchaResponse = document.querySelector('#loginForm .g-recaptcha-response')?.value;
+            if (!recaptchaResponse) {
+                this.view.showToast("Моля, потвърдете, че не сте робот!", "error");
+                this.view.shakeModal();
+                return; // Спираме дотук!
+            }
+
             const email = document.getElementById("loginEmail").value;
             const pass = document.getElementById("loginPass").value;
             this.view.setLoading(loginBtn, true);
+            
             try {
                 await this.authModel.login(email, pass);
                 this.view.showToast("Успешен вход!", "success");
                 this.view.toggleAuthModal(false);
             } catch(e) { 
-                this.view.showToast("Грешка!", "error"); 
+                this.view.showToast("Грешка при вход!", "error"); 
                 this.view.shakeModal();
             } finally {
                 this.view.setLoading(loginBtn, false);
+                // Рестартираме капчата след опит
+                if(window.grecaptcha) grecaptcha.reset(); 
             }
         };
 
+       // --- БУТОН ЗА РЕГИСТРАЦИЯ ---
         const regBtn = document.getElementById("regSubmitBtn");
         if(regBtn) regBtn.onclick = async () => {
+             // ПРОВЕРКА ЗА РОБОТ
+             const recaptchaResponse = document.querySelector('#registerForm .g-recaptcha-response')?.value;
+             if (!recaptchaResponse) {
+                 this.view.showToast("Моля, потвърдете, че не сте робот!", "error");
+                 this.view.shakeModal();
+                 return;
+             }
+
              const email = document.getElementById("regEmail").value;
              const pass = document.getElementById("regPass").value;
+             
              try {
                  await this.authModel.register(email, pass);
-                 this.view.showToast("Регистриран!", "success");
+                 this.view.showToast("Успешна регистрация!", "success");
                  this.view.toggleAuthModal(false);
-             } catch(e) { this.view.showToast(e.message, "error"); }
+             } catch(e) { 
+                 this.view.showToast(e.message, "error"); 
+             } finally {
+                 // Рестартираме капчата
+                 if(window.grecaptcha) grecaptcha.reset();
+             }
         };
         
         this.setupTabsAndEyes();

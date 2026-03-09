@@ -247,3 +247,71 @@ body.dark-mode .step-item p {
     padding: 20px 15px; /* Това отмества заглавието, продуктите и всичко навътре */
 
 }
+
+
+/* ===================================================
+    DARK MODE: ПРОДУКТИ (ХЛАДИЛНИК)
+   =================================================== */
+
+body.dark-mode .product {
+    background: rgba(30, 30, 40, 0.6); /* Същият стилен тъмен фон като на рецептите */
+    border-color: rgba(255, 255, 255, 0.1); /* Много лека светла рамка */
+}
+
+body.dark-mode .product:hover {
+    background: rgba(30, 30, 40, 0.9); /* Леко се затъмнява при посочване */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .p-name {
+    color: #ffffff; /* Бял текст за името на продукта */
+}
+
+/* Етикетчето с калориите */
+body.dark-mode .p-nutrition {
+    background: rgba(255, 255, 255, 0.1); 
+    color: #cccccc;
+}
+
+/* Бутонът "Добави" */
+body.dark-mode .add-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary); /* Остава цветен, за да си личи, че е бутон */
+}
+
+body.dark-mode .add-btn:hover {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+/* ===================================================
+   DARK MODE: КОШНИЦАТА С ПРОДУКТИ (ДЯСНА ЛЕНТА)
+   =================================================== */
+
+/* Самият добавен продукт в списъка */
+body.dark-mode .item {
+    background: rgba(30, 30, 40, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Името на продукта в кошницата */
+body.dark-mode .item .name {
+    color: #ffffff !important;
+}
+
+/* Кръгчето/Квадратчето с бройката (QTY) */
+body.dark-mode .item .qty {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+
+/* Текстът "Кошницата е празна" (ако е изписан) */
+body.dark-mode #cartEmpty {
+    color: #cccccc !important;
+}
+
+/* Текстовете за протеини и мазнини над кошницата */
+body.dark-mode .nutrition-bars label,
+body.dark-mode .nutrition-bars span {
+    color: #dddddd !important;
+}
