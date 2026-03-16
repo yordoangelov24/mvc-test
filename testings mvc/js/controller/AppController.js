@@ -74,17 +74,22 @@ export class AppController {
             searchInput.addEventListener("input", () => this.filterProducts());
         }
 
-        const allCategoryBtns = document.querySelectorAll(".chip, .mobile-chip");
+       const allCategoryBtns = document.querySelectorAll(".chip, .mobile-chip");
         
         allCategoryBtns.forEach(btn => {
             btn.addEventListener("click", (e) => {
                 allCategoryBtns.forEach(c => c.classList.remove("active"));
-                const cat = e.target.dataset.category;
                 
-                const siblings = document.querySelectorAll(`[data-category="${cat}"]`);
+                //  ТУК Е МАГИЯТА: Сменихме e.target с e.currentTarget
+                const tag = e.currentTarget.dataset.category; 
+                
+                // Ако по някаква причина няма категория, спираме, за да не счупим сайта
+                if (!tag) return; 
+                
+                const siblings = document.querySelectorAll(`[data-category="${tag}"]`);
                 siblings.forEach(s => s.classList.add("active"));
 
-                this.currentCategory = cat;
+                this.currentCategory = tag;
                 this.filterProducts();
             });
         });

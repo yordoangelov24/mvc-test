@@ -19,6 +19,6 @@ kogato dobavqm prodykti, da se dobavq edin put, a da ne se spami (moje da polzva
 
 da dobavq captcha (gotovo)
 
-bugnati kategorii
+bugnati kategorii (gotovo)
 
 da napisha min kolko gramash 
