@@ -13,7 +13,7 @@ da opravq dark mode-a (gotovo)
 
 kogato dobavqm prodykti, da se dobavq edin put, a da ne se spami (moje da polzvam i drug nachin)
 {
-    tyka mi trqqt nekvi idea kusi:
+    tyka mi trqqt nekvi idei :
       
 }
 
