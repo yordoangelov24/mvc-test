@@ -40,6 +40,8 @@ export class AppController {
         this.setupRoutingLogic(); 
         
         this.refreshPageData(this.authModel.currentUser);
+        console.log(JSON.stringify(this.dataModel.recipes, null, 2));
+        console.log(JSON.stringify(this.dataModel.products, null, 2));
     }
 
     refreshPageData(user) {

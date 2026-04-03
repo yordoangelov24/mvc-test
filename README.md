@@ -7,7 +7,7 @@ protein bar-a da zapo4va ot 4erveno kum zeleno - kolkoto poveche tolkoa po dobre
 maznini bar-a da zapo4va ot zeleno kum 4erveno - kolkoto poveche tolkoa po dobre
 
 gotvene tab-a v dadena recepta da opravq exit butona
-gotvene tab-a da opravq scroll-a kogato se hover-ne vurxy nego
+gotvene tab-a da opravq scroll-a kogato se hover-ne vurxy nego (gotovo)
 
 da opravq dark mode-a (gotovo)
 
