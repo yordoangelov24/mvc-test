@@ -69,7 +69,7 @@ export class DataModel {
                 // Точно попадение (Добавяме и usedProducts!)
                 exactMatches.push({ 
                     recipe: recipe, 
-                    used: usedProducts  // <--- ТОВА ЛИПСВАШЕ
+                    used: usedProducts  
                 });
             } else if (missingIds.length <= 2) {
                 // Частично попадение
@@ -77,12 +77,12 @@ export class DataModel {
                 partialMatches.push({ 
                     recipe: recipe, 
                     missing: missingProducts, 
-                    used: usedProducts // <--- ТОВА ЛИПСВАШЕ
+                    used: usedProducts 
                 });
             }
         });
 
-        // Сортиране
+        // Sort 
         exactMatches.sort((a, b) => b.used.length - a.used.length);
         partialMatches.sort((a, b) => a.used.length - b.used.length);
 

@@ -15,7 +15,8 @@ export class AuthModel {
     }
 
     // Следи дали някой влиза/излиза
-    monitorAuthState(callback) {
+    monitorAuthState(callback) 
+    {
         onAuthStateChanged(auth, async (user) => {
             this.currentUser = user;
             this.isAdmin = false;
@@ -23,9 +24,10 @@ export class AuthModel {
             if (user) {
                 try {
                     const snap = await getDoc(doc(db, "users", user.uid));
-                    if (snap.exists() && snap.data().role === "admin") {
+                    if (snap.exists() && snap.data().role === "admin") 
+                        {
                         this.isAdmin = true;
-                    }
+                        }
                 } catch (e) { console.error("Admin Check Error:", e); }
             }
             callback(user, this.isAdmin);
