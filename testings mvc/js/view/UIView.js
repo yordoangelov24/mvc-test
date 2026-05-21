@@ -224,7 +224,7 @@ export class UIView {
         if (this.elements.cookingModal) {
             this.elements.cookingModal.style.display = show ? "flex" : "none";
         }
-    } // <-- ОПРАВЕНА СКОБА ТУК
+    } 
 
     renderCookingResults(data, userFavs = [], toggleFavCallback = null) {
         const listContainer = this.elements.cookingResultsList;

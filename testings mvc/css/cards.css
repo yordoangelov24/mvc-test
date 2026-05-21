@@ -183,7 +183,7 @@ body.dark-mode .recipe-card p { color: #ccc; }
 /* Фонът на скрола - прозрачен и с отстъп отгоре (да не закрива X-чето) */
 #cookingResultsList::-webkit-scrollbar-track {
     background: transparent;
-    margin-top: 40px; /* 🔥 Това сваля скрола надолу, далече от "X" бутона */
+    margin-top: 40px; /*  Това сваля скрола надолу, далече от "X" бутона */
     margin-bottom: 10px;
 }
 
@@ -204,7 +204,7 @@ body.dark-mode .recipe-card p { color: #ccc; }
     flex-direction: column;
     gap: 15px;
     margin-top: 15px;
-    padding: 0 15px; /* 🔥 ТОВА добавя въздух отляво и отдясно */
+    padding: 0 15px; /*  ТОВА добавя въздух отляво и отдясно */
 }
 
 .step-item {
